@@ -93,6 +93,9 @@ export default {
             set(newVal) {
                 this.good.price = Math.floor(this.good.price) + newVal / 100;
             }
+        },
+        totalVal() {
+            return this.good.price.toFixed(2);
         }
     },
     data() {
@@ -116,7 +119,7 @@ export default {
         object-fit: contain;
     }
     .card-body {
-        height: 200px;
+        //height: 200px;
         .form-group {
             label {
                 font-weight: bold;

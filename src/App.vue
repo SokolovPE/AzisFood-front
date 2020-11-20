@@ -1,17 +1,20 @@
 <template>
     <div id="app">
-        <img alt="Vue logo" src="./assets/logo.png" />
-        <edit-cats></edit-cats>
+        <!-- <img alt="Vue logo" src="./assets/logo.png" /> -->
+        <nav-bar />
+        <edit-cats />
     </div>
 </template>
 
 <script>
 import CategoriesEdit from '@/components/admin/categories/CategoriesEdit.vue';
+import Navbar from '@/components/UI/Navbar.vue';
 
 export default {
     name: 'App',
     components: {
-        'edit-cats': CategoriesEdit
+        'edit-cats': CategoriesEdit,
+        'nav-bar': Navbar
     }
 };
 </script>
@@ -23,6 +26,5 @@ export default {
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
-    margin-top: 60px;
 }
 </style>
