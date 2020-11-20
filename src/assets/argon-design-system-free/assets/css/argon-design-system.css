@@ -18880,9 +18880,8 @@ textarea[resize="horizontal"] {
 .icon-xl svg {
   font-size: 4.25rem;
 }
-
 .icon-xl+.icon-text {
-  width: calc(100% - $icon-size-xl - 1);
+  width: calc(100% - 5rem - 1);
 }
 
 .icon-lg {
@@ -18896,7 +18895,7 @@ textarea[resize="horizontal"] {
 }
 
 .icon-lg+.icon-text {
-  width: calc(100% - $icon-size-lg - 1);
+  width: calc(100% - 4rem - 1);
 }
 
 .icon-sm {
@@ -18910,7 +18909,7 @@ textarea[resize="horizontal"] {
 }
 
 .icon-sm+.icon-text {
-  width: calc(100% - $icon-size-sm - 1);
+  width: calc(100% - 2rem - 1);
 }
 
 .icon-xs {
@@ -18924,7 +18923,7 @@ textarea[resize="horizontal"] {
 }
 
 .icon-xs+.icon-text {
-  width: calc(100% - $icon-size-xs - 1);
+  width: calc(100% - 1.25rem - 1);
 }
 
 .icon-shape {
