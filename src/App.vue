@@ -1,19 +1,16 @@
 <template>
     <div id="app">
-        <!-- <img alt="Vue logo" src="./assets/logo.png" /> -->
         <nav-bar />
-        <edit-cats />
+        <router-view></router-view>
     </div>
 </template>
 
 <script>
-import CategoriesEdit from '@/components/admin/categories/CategoriesEdit.vue';
 import Navbar from '@/components/UI/Navbar.vue';
 
 export default {
     name: 'App',
     components: {
-        'edit-cats': CategoriesEdit,
         'nav-bar': Navbar
     }
 };

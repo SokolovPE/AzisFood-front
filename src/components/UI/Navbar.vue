@@ -3,22 +3,32 @@
         <header
             class="navbar navbar-horizontal navbar-expand navbar-dark flex-row align-items-md-center ct-navbar bg-primary py-2"
         >
-            <a
+            <router-link
+                :to="{ name: 'home' }"
+                tag="a"
                 class="navbar-brand mr-0 mr-md-2 ml-0 ml-md-2"
-                href="../../index.html"
+                active-class="active"
                 aria-label="Bootstrap"
-            >
-                <img src="@/assets/brand/logo.png" style="40px" />
-            </a>
+                exact
+                ><img src="@/assets/brand/logo.png" style="40px"
+            /></router-link>
             <ul class="navbar-nav flex-row mr-auto ml-4 d-none d-md-flex">
-                <li class="nav-item">
-                    <a class="nav-link" href="../../index.html">Preview</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="" rel="nofollow" target="_blank"
-                        >Support</a
-                    >
-                </li>
+                <router-link
+                    to="/admin"
+                    tag="li"
+                    class="nav-item"
+                    active-class="active"
+                    exact
+                    ><a class="nav-link">Admin</a></router-link
+                >
+                <router-link
+                    :to="{ name: 'assortmentEdit' }"
+                    tag="li"
+                    class="nav-item"
+                    active-class="active"
+                    exact
+                    ><a class="nav-link">Assortment</a></router-link
+                >
             </ul>
             <div class="d-none d-sm-block ml-auto">
                 <ul
