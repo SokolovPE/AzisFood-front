@@ -4,7 +4,7 @@
             ><i class="fas fa-check-square fa-3x"></i
         ></a>
         <!-- <div class="img-wrapper">
-            <img class="card-img-top" :src="imgUrl" :alt="good.title" />
+            <img class="card-img-top" :src="good.imgUrl" :alt="good.title" />
         </div> -->
         <div class="card-body">
             <div class="form-group">
@@ -14,7 +14,24 @@
                     id="goodTitleEdit"
                     class="form-control form-control-alternative"
                     v-model="good.title"
+                    required
                 />
+            </div>
+            <div class="form-group">
+                <label for="goodCategoryEdit" class="pull-left">Category</label>
+                <select
+                    class="form-control"
+                    id="goodCategoryEdit"
+                    v-model="selectedCategory"
+                    required
+                >
+                    <option
+                        v-for="cat in getCategories"
+                        :key="cat.id"
+                        :value="cat"
+                        >{{ cat.title }}</option
+                    >
+                </select>
             </div>
             <div class="form-group">
                 <label for="goodDescEdit" class="pull-left">Description</label>
@@ -24,6 +41,7 @@
                     rows="3"
                     placeholder="Write description text here ..."
                     v-model="good.description"
+                    required
                 ></textarea>
             </div>
             <div class="form-group">
@@ -39,6 +57,7 @@
                         id="goodPriceCoinEdit"
                         class="form-control"
                         v-model="coinVal"
+                        required
                     />
                     <div class="input-group-prepend">
                         <span class="input-group-text">¢</span>
@@ -49,6 +68,7 @@
                         id="goodPriceChangeEdit"
                         class="form-control"
                         v-model="changeVal"
+                        required
                     />
                 </div>
             </div>
@@ -62,26 +82,46 @@
             ><i class="fas fa-pen-square fa-3x"></i
         ></a>
         <div class="img-wrapper">
-            <img class="card-img-top" :src="imgUrl" :alt="good.title" />
+            <img
+                class="card-img-top"
+                :src="require('@/assets/goods/plus.png')"
+                alt="Add new"
+            />
         </div>
         <div class="card-body">
-            <h5 class="card-title">{{ good.title }}</h5>
-            <p class="card-text">{{ good.description }}</p>
+            <h5 class="card-title">Add a new good</h5>
+            <!-- <p class="card-text">{{ good.description }}</p> -->
         </div>
-        <div class="card-footer">{{ good.price }}$</div>
+        <!-- <div class="card-footer">{{ good.price }}$</div> -->
     </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-
+import { mapGetters, mapActions } from 'vuex';
 export default {
     props: {
-        good: {
+        category: {
             type: Object
         }
     },
+    data() {
+        return {
+            editMode: false,
+            good: null,
+            baseGood: {
+                id: '',
+                categoryId: '',
+                category: '',
+                title: '',
+                description: '',
+                imgUrl: null, // require('@/assets/goods/burgers/mcChick.png'),
+                price: 0
+            },
+            selectedCategory: null
+        };
+    },
     computed: {
+        ...mapGetters('goods', ['getCategories']),
         coinVal: {
             get() {
                 return Math.floor(this.good.price);
@@ -100,32 +140,39 @@ export default {
         },
         totalVal() {
             return this.good.price.toFixed(2);
+        }
+    },
+    watch: {
+        selectedCategory(newValue) {
+            this.good.categoryId = newValue.id;
+            this.good.category = newValue.title;
         },
-        imgUrl() {
-            return this.good.imgUrl || require('@/assets/goods/default.png');
+        category(newValue) {
+            this.selectedCategory = newValue;
         }
     },
     methods: {
-        ...mapActions('goods', ['updateGood']),
+        ...mapActions('goods', ['addGood']),
         saveGood() {
-            this.updateGood(this.good).then(() => {
+            this.addGood(this.good).then(() => {
+                if (this.good.title != '' && this.good.price > 0) {
+                    this.good = this.baseGood;
+                }
                 this.editMode = false;
             });
         }
     },
-    data() {
-        return {
-            editMode: false
-        };
+    mounted() {
+        this.good = this.baseGood;
     }
 };
 </script>
 
 <style lang="scss" scoped>
 .card {
+    max-height: 442px;
     overflow: hidden;
     width: 18rem;
-    max-height: 442px;
     .card-edit-btn {
         position: absolute;
         right: 0;
@@ -135,7 +182,7 @@ export default {
         display: flex;
         align-items: center;
         img {
-            max-height: 250px;
+            max-height: 165px;
             object-fit: contain;
         }
     }
@@ -153,7 +200,10 @@ export default {
         }
     }
     .card-footer {
-        font-weight: bold;
+        padding: 0.65rem;
+        .btn-save {
+            width: 100%;
+        }
     }
     + .card {
         margin-left: 0.8rem;

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="row">
+        <div class="row" id="assort-edit-wrapper">
             <div class="col col-md-3">
                 <h1>Categories</h1>
                 <form id="new-cat" @submit.prevent="pushCat">
@@ -29,8 +29,8 @@
                         class="list-group-item list-group-item-action"
                         v-for="cat in cats"
                         :key="cat.id"
-                        :class="{ active: cat.id == currentCatId }"
-                        @click="selectCat(cat.id)"
+                        :class="{ active: cat.id == currentCat.id }"
+                        @click="selectCat(cat)"
                     >
                         {{ cat.title }}
                     </button>
@@ -39,6 +39,7 @@
             <div class="col col-md-9">
                 <h1>Goods in this Category</h1>
                 <div class="row">
+                    <add-good-card :category="currentCat" />
                     <good-card
                         v-for="good in goodsInCurretCat"
                         :key="good.id"
@@ -53,11 +54,16 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import GoodCard from '@/components/UI/goods/GoodCard.vue';
+import AddGoodCard from '@/components/UI/goods/AddGoodCard.vue';
+
 export default {
     data() {
         return {
             newCatTitle: '',
-            currentCatId: null
+            currentCat: {
+                id: 0,
+                title: ''
+            }
         };
     },
     computed: {
@@ -65,7 +71,7 @@ export default {
         goodsInCurretCat() {
             return (
                 this.goods.filter(
-                    good => good.categoryId == this.currentCatId
+                    good => good.categoryId == this.currentCat.id
                 ) || []
             );
         }
@@ -76,26 +82,36 @@ export default {
             'setCats',
             'addCat',
             'updateCat',
-            'removeCat'
+            'removeCat',
+            'fetchGoods',
+            'setGoods'
         ]),
         pushCat() {
             this.addCat(this.newCatTitle).then(() => {
                 this.newCatTitle = '';
             });
         },
-        selectCat(id) {
-            this.currentCatId = id;
+        selectCat(cat) {
+            this.currentCat = cat;
         }
     },
     components: {
-        'good-card': GoodCard
+        'good-card': GoodCard,
+        'add-good-card': AddGoodCard
     },
     mounted() {
         this.fetchCats().then(() => {
-            this.currentCatId = this.cats[0].id || null;
+            this.fetchGoods().then(() => {
+                this.currentCat = this.cats[0] || null;
+            });
         });
     }
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+#assort-edit-wrapper {
+    margin-right: 0;
+    margin-left: 0;
+}
+</style>

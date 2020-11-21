@@ -1,58 +1,12 @@
 import axios from 'axios';
 
 const dbUrl = 'https://vue-http-f059c.firebaseio.com';
-//const goodsUrl = `${dbUrl}/goods.json`;
+const goodsUrl = `${dbUrl}/goods.json`;
 const categoriesUrl = `${dbUrl}/cats.json`;
 
 const state = {
     categories: [],
-    goods: [
-        {
-            id: '',
-            categoryId: '-MMTvIpV0iypn2OtdKsc',
-            category: 'Chicken Burgers',
-            title: 'Mc Hamburger',
-            description: 'Chicken and ham.',
-            imgUrl: require('@/assets/goods/burgers/mcChick.png'),
-            price: 5.99
-        },
-        {
-            id: '',
-            categoryId: '-MMTvWXfJdAepJ7YNqdM',
-            category: 'Beef Burgers',
-            title: 'Mc Beefburger',
-            description: 'Beef and ham.',
-            imgUrl: require('@/assets/goods/burgers/mcBeef.png'),
-            price: 7.99
-        },
-        {
-            id: '',
-            categoryId: '-MMTvWXfJdAepJ7YNqdM',
-            category: 'Beef Burgers',
-            title: 'Royal Mc Beefburger',
-            description: 'Royal Beef and ham.',
-            imgUrl: require('@/assets/goods/burgers/royalMcBeef.png'),
-            price: 9.99
-        },
-        {
-            id: '',
-            categoryId: '-MMTvWXfJdAepJ7YNqdM',
-            category: 'Beef Burgers',
-            title: 'Bacon Mc Beefburger',
-            description: 'Bacon, Beef and ham.',
-            imgUrl: require('@/assets/goods/burgers/baconMcBeef.png'),
-            price: 8.99
-        },
-        {
-            id: '',
-            categoryId: '-MMTvYlwk3e_dEwjt_IZ',
-            category: 'Drinks',
-            title: 'Sparkling water',
-            description: 'Clean water.',
-            imgUrl: require('@/assets/goods/drinks/water.png'),
-            price: 0.99
-        }
-    ]
+    goods: []
 };
 
 const getters = {
@@ -145,7 +99,69 @@ const actions = {
             .then(() => {
                 commit('REMOVE_CAT', payload);
             });
+    },
+    fetchGoods: async ({ commit }) => {
+        let { data } = await axios.get(goodsUrl);
+        let processed = Object.keys(data).map(goodKey => {
+            let tempData = data[goodKey];
+            tempData.id = goodKey;
+            return tempData;
+        });
+        commit('SET_GOODS', processed);
+    },
+    setGoods: ({ commit }, payload) => {
+        axios
+            .put(goodsUrl, payload)
+            .then(response => {
+                console.log(response);
+                console.log('PUT was performed successfull!');
+                commit('SET_GOODS', payload);
+            })
+            .catch(error => {
+                console.log(`Error during PUT ${error}`);
+            });
+    },
+    updateGood: async ({ commit }, payload) => {
+        await axios
+            .patch(
+                `${goodsUrl.replace('.json', '')}/${payload.id}.json`,
+                payload
+            )
+            .then(() => {
+                commit('UPDATE_GOOD', payload);
+            })
+            .catch(error => {
+                console.error(`Error during updating a good: ${error}`);
+            });
+    },
+    addGood: async ({ commit }, payload) => {
+        await axios.post(goodsUrl, payload).then(result => {
+            if (result.status == 200) {
+                payload.id = result.data.name;
+                commit('ADD_GOOD', payload);
+            }
+        });
     }
+    // updateCat: async ({ commit }, payload) => {
+    //     await axios
+    //         .patch(
+    //             `${categoriesUrl.replace('.json', '')}/${payload.id}.json`,
+    //             payload
+    //         )
+    //         .then(() => {
+    //             commit('UPDATE_CAT', payload);
+    //         })
+    //         .catch(error => {
+    //             console.error(`Error during updating cat: ${error}`);
+    //         });
+    // },
+    // removeCat: ({ commit }, payload) => {
+    //     axios
+    //         .delete(`${categoriesUrl.replace('.json', '')}/${payload.id}.json`)
+    //         .then(() => {
+    //             commit('REMOVE_CAT', payload);
+    //         });
+    // }
 };
 
 export default {
