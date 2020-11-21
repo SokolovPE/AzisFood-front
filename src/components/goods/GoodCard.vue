@@ -1,12 +1,17 @@
 <template>
-    <div class="card" v-if="editMode">
-        <a href="#" class="card-edit-btn pull-right" @click.prevent="saveGood"
-            ><i class="fas fa-check-square fa-3x"></i
-        ></a>
-        <!-- <div class="img-wrapper">
-            <img class="card-img-top" :src="imgUrl" :alt="good.title" />
-        </div> -->
-        <div class="card-body">
+    <editable-card
+        :imgUrl="imgUrl"
+        :imgAlt="good.title"
+        v-if="true"
+        @save="saveGood"
+    >
+        <template v-slot:cardBody>
+            <h5 class="card-title">{{ good.title }}</h5>
+            <!-- <p class="card-text">{{ good.description }}</p> -->
+        </template>
+        <template v-slot:cardFooter>{{ totalVal }}$</template>
+        <!-- Body of edit mode -->
+        <template v-slot:cardBodyEdit>
             <div class="form-group">
                 <label for="goodTitleEdit" class="pull-left">Title</label>
                 <input
@@ -63,28 +68,13 @@
                     />
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="card" v-else>
-        <a
-            href="#"
-            class="card-edit-btn pull-right"
-            @click.prevent="editMode = true"
-            ><i class="fas fa-pen-square fa-3x"></i
-        ></a>
-        <div class="img-wrapper">
-            <img class="card-img-top" :src="imgUrl" :alt="good.title" />
-        </div>
-        <div class="card-body">
-            <h5 class="card-title">{{ good.title }}</h5>
-            <!-- <p class="card-text">{{ good.description }}</p> -->
-        </div>
-        <div class="card-footer">{{ totalVal }}$</div>
-    </div>
+        </template>
+    </editable-card>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
+import EditableCard from '@/components/UI/EditableCard.vue';
 
 export default {
     props: {
@@ -120,14 +110,12 @@ export default {
         ...mapActions('goods', ['updateGood']),
         saveGood() {
             this.updateGood(this.good).then(() => {
-                this.editMode = false;
+                console.log('done');
             });
         }
     },
-    data() {
-        return {
-            editMode: false
-        };
+    components: {
+        'editable-card': EditableCard
     }
 };
 </script>

@@ -67,6 +67,7 @@
                         v-for="good in goodsInCurretCat"
                         :key="good.id"
                         :good="good"
+                        :category="null"
                     />
                 </div>
             </div>
