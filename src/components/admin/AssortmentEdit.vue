@@ -1,13 +1,17 @@
 <template>
     <div>
+        <!-- Remove this when component will really be used!!! -->
+        <div class="fake-splitter"></div>
         <div class="row" id="assort-edit-wrapper">
-            <div class="col col-md-3">
-                <h1>Categories</h1>
+            <div class="col col-12 col-md-12 col-sm-12 col-lg-2">
+                <div class="form-group" v-if="isMobile">
+                    <h5 for="catSelector" class="pull-left">Category</h5>
+                </div>
                 <form id="new-cat" @submit.prevent="pushCat">
                     <div class="input-group">
                         <input
                             type="text"
-                            class="form-control"
+                            class="form-control bc-primary"
                             aria-label="Title of new category."
                             placeholder="Some title"
                             v-model="newCatTitle"
@@ -22,23 +26,42 @@
                         </div>
                     </div>
                 </form>
-                <hr />
-                <div id="cats" class="list-group">
+                <div class="form-group" v-if="isMobile">
+                    <b-form-select
+                        v-model="currentCat"
+                        class="bc-primary"
+                        id="catSelector"
+                    >
+                        <b-form-select-option
+                            v-for="cat in cats"
+                            :key="cat.id"
+                            :value="cat"
+                            >{{ cat.title }}</b-form-select-option
+                        >
+                    </b-form-select>
+                </div>
+                <div id="cats" class="list-group" v-else>
                     <button
                         type="button"
-                        class="list-group-item list-group-item-action"
+                        class="list-group-item d-flex justify-content-between align-items-center list-group-item-action"
                         v-for="cat in cats"
                         :key="cat.id"
                         :class="{ active: cat.id == currentCat.id }"
                         @click="selectCat(cat)"
                     >
                         {{ cat.title }}
+                        <span
+                            class="badge badge-primary badge-pill"
+                            :class="{
+                                'badge-secondary': cat.id == currentCat.id
+                            }"
+                            >{{ goodCntInCat(cat.id) }}</span
+                        >
                     </button>
                 </div>
             </div>
-            <div class="col col-md-9">
-                <h1>Goods in this Category</h1>
-                <div class="row">
+            <div class="col col-12 col-md-12 col-sm-12 col-lg-10">
+                <div class="row" :class="{ 'justify-center': isMobile }">
                     <add-good-card :category="currentCat" />
                     <good-card
                         v-for="good in goodsInCurretCat"
@@ -53,8 +76,8 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import GoodCard from '@/components/UI/goods/GoodCard.vue';
-import AddGoodCard from '@/components/UI/goods/AddGoodCard.vue';
+import GoodCard from '@/components/goods/GoodCard.vue';
+import AddGoodCard from '@/components/goods/AddGoodCard.vue';
 
 export default {
     data() {
@@ -67,13 +90,20 @@ export default {
         };
     },
     computed: {
-        ...mapGetters('goods', { cats: 'getCategories', goods: 'getGoods' }),
+        ...mapGetters('goods', {
+            cats: 'getCategories',
+            goods: 'getGoods',
+            goodCntInCat: 'getGoodCntInCategory'
+        }),
         goodsInCurretCat() {
             return (
                 this.goods.filter(
                     good => good.categoryId == this.currentCat.id
                 ) || []
             );
+        },
+        isMobile() {
+            return this.$mq === 'mobile' || this.$mq === 'tablet';
         }
     },
     methods: {
@@ -113,5 +143,12 @@ export default {
 #assort-edit-wrapper {
     margin-right: 0;
     margin-left: 0;
+}
+#new-cat {
+    margin-bottom: 0.8rem;
+}
+
+.fake-splitter {
+    height: 2rem;
 }
 </style>

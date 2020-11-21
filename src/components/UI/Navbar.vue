@@ -102,6 +102,7 @@
                 aria-controls="ct-docs-nav"
                 aria-expanded="false"
                 aria-label="Toggle docs navigation"
+                @click="goToAssortment"
             >
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -110,7 +111,13 @@
 </template>
 
 <script>
-export default {};
+export default {
+    methods: {
+        goToAssortment() {
+            this.$router.push({ name: 'assortmentEdit' });
+        }
+    }
+};
 </script>
 
 <style lang="scss" scoped></style>

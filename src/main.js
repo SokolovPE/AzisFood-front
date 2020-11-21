@@ -3,6 +3,7 @@ import axios from 'axios';
 import VueAxios from 'vue-axios';
 import App from './App.vue';
 import VueRouter from 'vue-router';
+import VueMq from 'vue-mq';
 
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
 import { routes } from './routes';
@@ -25,6 +26,16 @@ Vue.config.productionTip = false;
 
 Vue.use(VueAxios, axios);
 Vue.use(VueRouter);
+
+//* Media queries.
+Vue.use(VueMq, {
+    breakpoints: {
+        mobile: 550,
+        tablet: 900,
+        laptop: 1250,
+        desktop: Infinity
+    }
+});
 
 const router = new VueRouter({
     routes,

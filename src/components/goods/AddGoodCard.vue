@@ -98,6 +98,8 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import { GoodModel } from '@/models/GoodModels';
+
 export default {
     props: {
         category: {
@@ -107,16 +109,7 @@ export default {
     data() {
         return {
             editMode: false,
-            good: null,
-            baseGood: {
-                id: '',
-                categoryId: '',
-                category: '',
-                title: '',
-                description: '',
-                imgUrl: null, // require('@/assets/goods/burgers/mcChick.png'),
-                price: 0
-            },
+            good: { ...GoodModel },
             selectedCategory: null
         };
     },
@@ -154,16 +147,14 @@ export default {
     methods: {
         ...mapActions('goods', ['addGood']),
         saveGood() {
-            this.addGood(this.good).then(() => {
-                if (this.good.title != '' && this.good.price > 0) {
-                    this.good = this.baseGood;
-                }
-                this.editMode = false;
-            });
+            if (this.good.title != '' && this.good.price > 0) {
+                this.addGood(this.good);
+            }
+            this.good = { ...GoodModel };
+            this.good.categoryId = this.selectedCategory.id;
+            this.good.category = this.selectedCategory.title;
+            this.editMode = false;
         }
-    },
-    mounted() {
-        this.good = this.baseGood;
     }
 };
 </script>
@@ -173,6 +164,9 @@ export default {
     max-height: 442px;
     overflow: hidden;
     width: 18rem;
+    margin-right: 0.8rem;
+    margin-bottom: 0.8rem;
+    border-color: rgba(0, 0, 0, 0.15);
     .card-edit-btn {
         position: absolute;
         right: 0;
@@ -204,9 +198,6 @@ export default {
         .btn-save {
             width: 100%;
         }
-    }
-    + .card {
-        margin-left: 0.8rem;
     }
 }
 </style>

@@ -23,5 +23,11 @@ export default {
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
+    .bc-primary {
+        border-color: var(--primary);
+    }
+    .justify-center {
+        justify-content: center;
+    }
 }
 </style>

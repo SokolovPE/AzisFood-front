@@ -1,0 +1,3 @@
+Loading child component, which depends on Vuex state:
+1) On parent's created hook fetch state from database.
+2) On child's mounted use getter to access the data of concrete entity.

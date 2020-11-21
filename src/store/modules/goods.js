@@ -15,6 +15,12 @@ const getters = {
     },
     getGoods: state => {
         return state.goods;
+    },
+    getGoodById: state => id => {
+        return state.goods.find(good => good.id == id);
+    },
+    getGoodCntInCategory: state => catId => {
+        return state.goods.filter(good => good.categoryId == catId).length;
     }
 };
 

@@ -15,9 +15,21 @@ const AssortmentEdit = resolve => {
     );
 };
 
-const MainAdmin = resolve => {
+const RootAdmin = resolve => {
     require.ensure(['@/components/admin/Admin.vue'], () => {
         resolve(require('@/components/admin/Admin.vue'));
+    });
+};
+
+const RootGoods = resolve => {
+    require.ensure(['@/components/goods/RootGoods.vue'], () => {
+        resolve(require('@/components/goods/RootGoods.vue'));
+    });
+};
+
+const GoodDetail = resolve => {
+    require.ensure(['@/components/goods/GoodDetail.vue'], () => {
+        resolve(require('@/components/goods/GoodDetail.vue'));
     });
 };
 
@@ -37,14 +49,30 @@ export const routes = [
         component: Home
     },
     {
+        path: '/goods', // or menu?
+        alias: '/admin/good-detail',
+        component: RootGoods,
+        children: [
+            {
+                path: ':id',
+                name: 'goodDetail',
+                component: GoodDetail
+            }
+        ]
+    },
+    {
         path: '/admin',
-        component: MainAdmin,
+        component: RootAdmin,
         children: [
             { path: '', component: AdminStart },
             {
-                path: '/assortment',
+                path: 'assortment',
                 name: 'assortmentEdit',
                 component: AssortmentEdit
+            },
+            {
+                path: 'good-detail/:id',
+                redirect: { name: 'goodDetail' }
             }
         ]
     },

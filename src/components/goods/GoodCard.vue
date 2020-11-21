@@ -17,6 +17,17 @@
                 />
             </div>
             <div class="form-group">
+                <label for="goodImgSrcEdit" class="pull-left"
+                    >Image Source</label
+                >
+                <input
+                    type="text"
+                    id="goodImgSrcEdit"
+                    class="form-control form-control-alternative"
+                    v-model="good.imgUrl"
+                />
+            </div>
+            <div class="form-group">
                 <label for="goodDescEdit" class="pull-left">Description</label>
                 <textarea
                     id="goodDescEdit"
@@ -66,7 +77,7 @@
         </div>
         <div class="card-body">
             <h5 class="card-title">{{ good.title }}</h5>
-            <p class="card-text">{{ good.description }}</p>
+            <!-- <p class="card-text">{{ good.description }}</p> -->
         </div>
         <div class="card-footer">{{ totalVal }}$</div>
     </div>
@@ -126,6 +137,8 @@ export default {
     overflow: hidden;
     width: 18rem;
     max-height: 442px;
+    margin-bottom: 0.8rem;
+    border-color: rgba(0, 0, 0, 0.15);
     .card-edit-btn {
         position: absolute;
         right: 0;
@@ -156,7 +169,7 @@ export default {
         font-weight: bold;
     }
     + .card {
-        margin-left: 0.8rem;
+        margin-right: 0.8rem;
     }
 }
 </style>
