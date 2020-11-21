@@ -60,7 +60,6 @@
                     </button>
                 </div>
             </div>
-            <button @click="setGoods(goods)">PUT</button>
             <div class="col col-12 col-md-12 col-sm-12 col-lg-10">
                 <div class="row" :class="{ 'justify-center': isMobile }">
                     <add-good-card :category="currentCat" />
