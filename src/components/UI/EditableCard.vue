@@ -17,7 +17,7 @@
         <div class="img-wrapper" :class="{ 'img-wrapper-add': createMode }">
             <img class="card-img-top" :src="imageUrl" :alt="imgAlt" />
         </div>
-        <div class="card-body">
+        <div class="card-body" :class="{ 'card-body-edit': editMode }">
             <slot name="cardBody">Card body in view mode here...</slot>
         </div>
         <div class="card-footer" v-if="showFooter">
@@ -75,8 +75,9 @@ export default {
 .card {
     overflow: hidden;
     width: 18rem;
-    max-height: 442px;
+    max-height: 415px;
     margin-bottom: 0.8rem;
+    margin-right: 0.8rem;
     border-color: rgba(0, 0, 0, 0.15);
     .card-edit-btn {
         position: absolute;
@@ -107,11 +108,11 @@ export default {
             text-overflow: ellipsis;
         }
     }
+    .card-body-edit {
+        padding-top: 0;
+    }
     .card-footer {
         font-weight: bold;
-    }
-    + .card {
-        margin-right: 0.8rem;
     }
 }
 </style>

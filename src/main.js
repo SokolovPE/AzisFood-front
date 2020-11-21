@@ -5,7 +5,7 @@ import App from './App.vue';
 import VueRouter from 'vue-router';
 import VueMq from 'vue-mq';
 
-import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
+import { BootstrapVue, IconsPlugin, ToastPlugin } from 'bootstrap-vue';
 import { routes } from './routes';
 import { store } from './store/store';
 
@@ -16,6 +16,7 @@ import '@/assets/argon-design-system-free/assets/css/nucleo-icons.css';
 import '@/assets/argon-design-system-free/assets/css/nucleo-svg.css';
 import '@/assets/argon-design-system-free/assets/css/font-awesome.css';
 
+Vue.use(ToastPlugin);
 //* Install BootstrapVue
 Vue.use(BootstrapVue);
 //* Optionally install the BootstrapVue icon components plugin

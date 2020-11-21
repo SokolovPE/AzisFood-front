@@ -62,12 +62,11 @@
             </div>
             <div class="col col-12 col-md-12 col-sm-12 col-lg-10">
                 <div class="row" :class="{ 'justify-center': isMobile }">
-                    <!-- <add-good-card :category="currentCat" /> -->
                     <good-card :category="currentCat" :forCreate="true" />
                     <good-card
                         v-for="good in goodsInCurretCat"
                         :key="good.id"
-                        :good="good"
+                        :valGood="good"
                     />
                 </div>
             </div>
@@ -78,7 +77,6 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import GoodCard from '@/components/goods/GoodCard.vue';
-import AddGoodCard from '@/components/goods/AddGoodCard.vue';
 
 export default {
     data() {
@@ -127,8 +125,7 @@ export default {
         }
     },
     components: {
-        'good-card': GoodCard,
-        'add-good-card': AddGoodCard
+        'good-card': GoodCard
     },
     mounted() {
         this.fetchCats().then(() => {

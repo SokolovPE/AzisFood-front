@@ -46,7 +46,10 @@ const mutations = {
         state.goods.push(payload);
     },
     REMOVE_GOOD(state, payload) {
-        state.goods = state.goods.filter(good => good != payload);
+        state.goods = state.goods.filter(good => good.id != payload.id);
+    },
+    REMOVE_GOOD_BY_ID(state, payload) {
+        state.goods = state.goods.filter(good => good.id != payload);
     },
     UPDATE_GOOD(state, payload) {
         state.goods = state.goods.map(good =>
@@ -147,6 +150,13 @@ const actions = {
                 commit('ADD_GOOD', payload);
             }
         });
+    },
+    removeGoodById: async ({ commit }, payload) => {
+        axios
+            .delete(`${goodsUrl.replace('.json', '')}/${payload}.json`)
+            .then(() => {
+                commit('REMOVE_GOOD_BY_ID', payload);
+            });
     }
     // updateCat: async ({ commit }, payload) => {
     //     await axios
