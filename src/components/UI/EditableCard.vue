@@ -14,13 +14,13 @@
             @click.prevent="editMode = true"
             ><i class="fas fa-pen-square fa-3x"></i
         ></a>
-        <div class="img-wrapper">
+        <div class="img-wrapper" :class="{ 'img-wrapper-add': createMode }">
             <img class="card-img-top" :src="imageUrl" :alt="imgAlt" />
         </div>
         <div class="card-body">
             <slot name="cardBody">Card body in view mode here...</slot>
         </div>
-        <div class="card-footer">
+        <div class="card-footer" v-if="showFooter">
             <slot name="cardFooter">Card footer in view mode here...</slot>
         </div>
     </div>
@@ -35,6 +35,17 @@ export default {
         imgAlt: {
             type: String,
             default: 'Alt for image...'
+        },
+        imgDefault: {
+            type: String
+        },
+        createMode: {
+            type: Boolean,
+            default: false
+        },
+        showFooter: {
+            type: Boolean,
+            default: true
         }
     },
     data() {
@@ -44,7 +55,11 @@ export default {
     },
     computed: {
         imageUrl() {
-            return this.imgUrl || require('@/assets/goods/default.png'); //! Move it...
+            return (
+                this.imgUrl ||
+                this.imgDefault ||
+                require('@/assets/default.png')
+            );
         }
     },
     methods: {
@@ -74,6 +89,11 @@ export default {
         img {
             max-height: 250px;
             object-fit: contain;
+        }
+    }
+    .img-wrapper-add {
+        img {
+            max-height: 165px;
         }
     }
     .card-body {

@@ -62,7 +62,8 @@
             </div>
             <div class="col col-12 col-md-12 col-sm-12 col-lg-10">
                 <div class="row" :class="{ 'justify-center': isMobile }">
-                    <add-good-card :category="currentCat" />
+                    <!-- <add-good-card :category="currentCat" /> -->
+                    <good-card :category="currentCat" :forCreate="true" />
                     <good-card
                         v-for="good in goodsInCurretCat"
                         :key="good.id"
@@ -131,9 +132,9 @@ export default {
     },
     mounted() {
         this.fetchCats().then(() => {
-            // this.fetchGoods().then(() => {
-            //     this.currentCat = this.cats[0] || null;
-            // });
+            this.fetchGoods().then(() => {
+                this.currentCat = this.cats[0] || null;
+            });
         });
     }
 };
