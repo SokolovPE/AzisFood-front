@@ -68,7 +68,7 @@
             <h5 class="card-title">{{ good.title }}</h5>
             <p class="card-text">{{ good.description }}</p>
         </div>
-        <div class="card-footer">{{ good.price }}$</div>
+        <div class="card-footer">{{ totalVal }}$</div>
     </div>
 </template>
 
