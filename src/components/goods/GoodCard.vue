@@ -22,6 +22,22 @@
                 />
             </div>
             <div class="form-group">
+                <label for="goodCategoryEdit" class="pull-left">Category</label>
+                <select
+                    class="form-control"
+                    id="goodCategoryEdit"
+                    v-model="selectedCategory"
+                    required
+                >
+                    <option
+                        v-for="cat in getCategories"
+                        :key="cat.id"
+                        :value="cat"
+                        >{{ cat.title }}</option
+                    >
+                </select>
+            </div>
+            <div class="form-group">
                 <label for="goodImgSrcEdit" class="pull-left"
                     >Image Source</label
                 >
@@ -37,7 +53,7 @@
                 <textarea
                     id="goodDescEdit"
                     class="form-control form-control-alternative"
-                    rows="3"
+                    rows="2"
                     placeholder="Write description text here ..."
                     v-model="good.description"
                 ></textarea>
@@ -73,7 +89,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import EditableCard from '@/components/UI/EditableCard.vue';
 
 export default {
@@ -82,7 +98,13 @@ export default {
             type: Object
         }
     },
+    data() {
+        return {
+            selectedCategory: null
+        };
+    },
     computed: {
+        ...mapGetters('goods', ['getCategories']),
         coinVal: {
             get() {
                 return Math.floor(this.good.price);

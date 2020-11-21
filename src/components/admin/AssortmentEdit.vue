@@ -60,6 +60,7 @@
                     </button>
                 </div>
             </div>
+            <button @click="setGoods(goods)">PUT</button>
             <div class="col col-12 col-md-12 col-sm-12 col-lg-10">
                 <div class="row" :class="{ 'justify-center': isMobile }">
                     <add-good-card :category="currentCat" />
@@ -67,7 +68,6 @@
                         v-for="good in goodsInCurretCat"
                         :key="good.id"
                         :good="good"
-                        :category="null"
                     />
                 </div>
             </div>
@@ -99,7 +99,7 @@ export default {
         goodsInCurretCat() {
             return (
                 this.goods.filter(
-                    good => good.categoryId == this.currentCat.id
+                    good => good.category.id == this.currentCat.id
                 ) || []
             );
         },
@@ -132,9 +132,9 @@ export default {
     },
     mounted() {
         this.fetchCats().then(() => {
-            this.fetchGoods().then(() => {
-                this.currentCat = this.cats[0] || null;
-            });
+            // this.fetchGoods().then(() => {
+            //     this.currentCat = this.cats[0] || null;
+            // });
         });
     }
 };

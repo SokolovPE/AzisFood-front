@@ -20,7 +20,7 @@ const getters = {
         return state.goods.find(good => good.id == id);
     },
     getGoodCntInCategory: state => catId => {
-        return state.goods.filter(good => good.categoryId == catId).length;
+        return state.goods.filter(good => good.category.id == catId).length;
     }
 };
 

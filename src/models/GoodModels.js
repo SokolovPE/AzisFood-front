@@ -1,7 +1,9 @@
 export const GoodModel = {
     id: '',
-    categoryId: '',
-    category: '',
+    category: {
+        id: '',
+        title: ''
+    },
     title: '',
     description: '',
     imgUrl: null,
