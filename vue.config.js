@@ -1,9 +1,9 @@
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
-    .BundleAnalyzerPlugin;
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+//     .BundleAnalyzerPlugin;
 
 module.exports = {
-    lintOnSave: false,
-    configureWebpack: {
-        plugins: [new BundleAnalyzerPlugin()]
-    }
+    lintOnSave: false
+    // configureWebpack: {
+    //     plugins: [new BundleAnalyzerPlugin()]
+    // }
 };
