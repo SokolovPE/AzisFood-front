@@ -5,6 +5,7 @@ import Vuex from 'vuex';
 
 import todo from './modules/todo';
 import goods from './modules/goods';
+import auth from './modules/auth.module';
 
 Vue.use(Vuex, VueAxios, axios);
 
@@ -15,6 +16,7 @@ export const store = new Vuex.Store({
     actions: {},
     modules: {
         todo,
-        goods
+        goods,
+        auth
     }
 });

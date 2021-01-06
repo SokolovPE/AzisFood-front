@@ -4,6 +4,7 @@ import VueAxios from 'vue-axios';
 import App from './App.vue';
 import VueRouter from 'vue-router';
 import VueMq from 'vue-mq';
+import VeeValidate from 'vee-validate';
 
 import { BTabs, BTab, BFormSelect, BFormSelectOption } from 'bootstrap-vue';
 import { routes } from './routes';
@@ -25,6 +26,7 @@ Vue.config.productionTip = false;
 
 Vue.use(VueAxios, axios);
 Vue.use(VueRouter);
+Vue.use(VeeValidate);
 
 //* Media queries.
 Vue.use(VueMq, {
@@ -53,6 +55,20 @@ const router = new VueRouter({
         }
         //* In all other cases scroll to top.
         return { x: 0, y: 0 };
+    }
+});
+
+router.beforeEach((to, from, next) => {
+    const publicPages = ['/login', '/register', '/home'];
+    const authRequired = !publicPages.includes(to.path);
+    const loggedIn = localStorage.getItem('user');
+
+    // trying to access a restricted page + not logged in
+    // redirect to login page
+    if (authRequired && !loggedIn) {
+        next('/login');
+    } else {
+        next();
     }
 });
 

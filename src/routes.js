@@ -42,6 +42,47 @@ const AdminStart = resolve => {
         'admin'
     );
 };
+
+const Login = resolve => {
+    require.ensure(
+        ['@/views/Login.vue'],
+        () => {
+            resolve(require('@/views/Login.vue'));
+        },
+        'login'
+    );
+};
+
+const Register = resolve => {
+    require.ensure(
+        ['@/views/Register.vue'],
+        () => {
+            resolve(require('@/views/Register.vue'));
+        },
+        'register'
+    );
+};
+
+const Catalog = resolve => {
+    require.ensure(
+        ['@/views/Catalog.vue'],
+        () => {
+            resolve(require('@/views/Catalog.vue'));
+        },
+        'catalog'
+    );
+};
+
+const Profile = resolve => {
+    require.ensure(
+        ['@/views/Profile.vue'],
+        () => {
+            resolve(require('@/views/Profile.vue'));
+        },
+        'profile'
+    );
+};
+
 export const routes = [
     {
         path: '',
@@ -73,6 +114,54 @@ export const routes = [
             {
                 path: 'good-detail/:id',
                 redirect: { name: 'goodDetail' }
+            }
+        ]
+    },
+    {
+        path: '/login',
+        component: Login,
+        children: [
+            { path: '', component: Login },
+            {
+                path: 'login',
+                name: 'login',
+                component: Login
+            }
+        ]
+    },
+    {
+        path: '/register',
+        component: Register,
+        children: [
+            { path: '', component: Register },
+            {
+                path: 'register',
+                name: 'register',
+                component: Register
+            }
+        ]
+    },
+    {
+        path: '/profile',
+        component: Profile,
+        children: [
+            { path: '', component: Profile },
+            {
+                path: 'profile',
+                name: 'profile',
+                component: Profile
+            }
+        ]
+    },
+    {
+        path: '/catalog',
+        component: Catalog,
+        children: [
+            { path: '', component: Catalog },
+            {
+                path: 'catalog',
+                name: 'catalog',
+                component: Catalog
             }
         ]
     },

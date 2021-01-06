@@ -29,6 +29,22 @@
                     exact
                     ><a class="nav-link">Assortment</a></router-link
                 >
+                <router-link
+                    to="/catalog"
+                    tag="li"
+                    class="nav-item"
+                    active-class="active"
+                    exact
+                    ><a class="nav-link">Catalog</a></router-link
+                >
+                <router-link
+                    to="/profile"
+                    tag="li"
+                    class="nav-item"
+                    active-class="active"
+                    exact
+                    ><a class="nav-link">Profile</a></router-link
+                >
             </ul>
             <div class="d-none d-sm-block ml-auto">
                 <ul
@@ -91,7 +107,7 @@
                     <span class="btn-inner--icon">
                         <i class="fa fa-shopping-cart"></i>
                     </span>
-                    <span class="nav-link-inner--text">Something</span>
+                    <span class="nav-link-inner--text">Cart</span>
                 </a>
             </li>
             <button
