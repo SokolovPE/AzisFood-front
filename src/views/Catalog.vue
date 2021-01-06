@@ -7,6 +7,10 @@
             <ul id="categories">
                 <li v-for="cat in categories" :key="cat.id">{{ cat.title }}</li>
             </ul>
+            <hr />
+            <ul id="goods">
+                <li v-for="good in goods" :key="good.id">{{ good.title }}</li>
+            </ul>
         </div>
     </div>
 </template>
@@ -18,6 +22,7 @@ export default {
     data() {
         return {
             categories: '',
+            goods: '',
             error: ''
         };
     },
@@ -25,6 +30,18 @@ export default {
         CatalogService.getCategories().then(
             response => {
                 this.categories = response.data;
+            },
+            error => {
+                this.error =
+                    (error.response && error.response.data) ||
+                    error.message ||
+                    error.toString();
+            }
+        );
+
+        CatalogService.getGoods().then(
+            response => {
+                this.goods = response.data;
             },
             error => {
                 this.error =
