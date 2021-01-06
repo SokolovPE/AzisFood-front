@@ -8,10 +8,16 @@
             />
             <form name="form" @submit.prevent="handleLogin">
                 <div class="form-group">
-                    <label for="email">Email</label>
+                    <label for="email">{{
+                        user.email == null && user.login == null
+                            ? 'Login/Email'
+                            : user.email == null
+                            ? 'Login'
+                            : 'Email'
+                    }}</label>
                     <input
-                        type="email"
-                        v-model="user.email"
+                        type="text"
+                        v-model="currentLogin"
                         v-validate="'required'"
                         class="form-control"
                         name="email"
@@ -21,7 +27,7 @@
                         class="alert alert-danger"
                         role="alert"
                     >
-                        Email is required!
+                        Email or Login is required!
                     </div>
                 </div>
                 <div class="form-group">
@@ -71,13 +77,28 @@ export default {
     name: 'Login',
     data() {
         return {
-            user: new User('', ''),
+            user: new User(null, null),
             loading: false,
             message: ''
         };
     },
     computed: {
-        ...mapGetters('auth', ['isLoggedIn'])
+        ...mapGetters('auth', ['isLoggedIn']),
+        currentLogin: {
+            get: function() {
+                return this.user.login ?? this.user.email;
+            },
+            set: function(newValue) {
+                if (newValue.indexOf('@') > 0) {
+                    //* if @ is found - it's email.
+                    this.user.login = null;
+                    this.user.email = newValue;
+                } else {
+                    this.user.email = null;
+                    this.user.login = newValue;
+                }
+            }
+        }
     },
     created() {
         if (this.isLoggedIn) {
@@ -94,7 +115,10 @@ export default {
                     return;
                 }
 
-                if (this.user.email && this.user.password) {
+                if (
+                    (this.user.login || this.user.email) &&
+                    this.user.password
+                ) {
                     this.login(this.user).then(
                         () => {
                             this.$router.push('/profile');

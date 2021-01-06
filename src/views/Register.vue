@@ -1,6 +1,7 @@
 <template>
     <div class="col-md-12">
         <div class="card card-container">
+            <h2>SIGN UP</h2>
             <img
                 id="profile-img"
                 src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
@@ -8,22 +9,22 @@
             />
             <form name="form" @submit.prevent="handleRegister">
                 <div v-if="!successful">
-                    <!-- <div class="form-group">
-                        <label for="email">Email</label>
+                    <div class="form-group">
+                        <label for="login">Login</label>
                         <input
-                            v-model="user.email"
+                            v-model="user.login"
                             v-validate="'required|min:3|max:20'"
                             type="text"
                             class="form-control"
-                            name="email"
+                            name="login"
                         />
                         <div
-                            v-if="submitted && errors.has('email')"
+                            v-if="submitted && errors.has('login')"
                             class="alert-danger"
                         >
-                            {{ errors.first('email') }}
+                            {{ errors.first('login') }}
                         </div>
-                    </div> -->
+                    </div>
                     <div class="form-group">
                         <label for="email">Email</label>
                         <input
