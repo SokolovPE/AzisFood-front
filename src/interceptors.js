@@ -26,7 +26,7 @@ export default function setup() {
                         return axios(originalRequest);
                     },
                     error => {
-                        console.log(error);
+                        store.dispatch('auth/logout');
                         return Promise.reject(error);
                     }
                 );
