@@ -44,7 +44,7 @@
                     <button
                         type="button"
                         class="list-group-item d-flex justify-content-between align-items-center list-group-item-action"
-                        v-for="cat in cats"
+                        v-for="cat in catsMDB"
                         :key="cat.id"
                         :class="{ active: cat.id == currentCat.id }"
                         @click="selectCat(cat)"
@@ -55,7 +55,7 @@
                             :class="{
                                 'badge-secondary': cat.id == currentCat.id
                             }"
-                            >{{ goodCntInCat(cat.id) }}</span
+                            >{{ cat.goodCnt }}</span
                         >
                     </button>
                 </div>
@@ -77,6 +77,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import GoodCard from '@/components/goods/GoodCard.vue';
+import CatalogService from '@/services/catalog.service';
 
 export default {
     data() {
@@ -85,7 +86,8 @@ export default {
             currentCat: {
                 id: 0,
                 title: ''
-            }
+            },
+            catsMDB: []
         };
     },
     computed: {
@@ -116,12 +118,41 @@ export default {
             'setGoods'
         ]),
         pushCat() {
-            this.addCat(this.newCatTitle).then(() => {
-                this.newCatTitle = '';
-            });
+            CatalogService.createCategory({ title: this.newCatTitle })
+                .then(response => {
+                    if (!response) {
+                        return;
+                    }
+                    let cat = response.data;
+                    cat.goodCnt = 0;
+                    this.catsMDB.push(cat);
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+                .then(() => {
+                    this.newCatTitle = '';
+                });
         },
         selectCat(cat) {
             this.currentCat = cat;
+        },
+        fetchCatsMDB() {
+            let vm = this;
+            CatalogService.getCategoriesWithCnt().then(response => {
+                vm.catsMDB = response.data;
+            });
+        },
+        getGoodCntInCatMDB(categoryId) {
+            CatalogService.getGoodCntInCategory(categoryId).then(
+                response => {
+                    return response.data;
+                },
+                error => {
+                    console.log(error);
+                    return 0;
+                }
+            );
         }
     },
     components: {
@@ -133,6 +164,7 @@ export default {
                 this.currentCat = this.cats[0] || null;
             });
         });
+        this.fetchCatsMDB();
     }
 };
 </script>

@@ -1,9 +1,20 @@
 import axios from 'axios';
 import { store } from '@/store/store';
 
+const MY_HOSTNAME = 'localhost';
+
 export default function setup() {
     axios.interceptors.request.use(async config => {
+        let hostname = new URL(config.url).hostname;
+        if (hostname !== MY_HOSTNAME) {
+            return config;
+        }
+
         let user = JSON.parse(localStorage.getItem('user'));
+        if (!user) {
+            return config;
+        }
+
         config.headers = {
             Authorization: `Bearer ${user.accessToken}`
         };
@@ -21,6 +32,10 @@ export default function setup() {
                 originalRequest._retry = true;
                 store.dispatch('auth/renew').then(
                     newJwt => {
+                        if (!newJwt || !newJwt.accessToken) {
+                            store.dispatch('auth/logout');
+                            return Promise.reject(error);
+                        }
                         axios.defaults.headers.common['Authorization'] =
                             'Bearer ' + newJwt.accessToken;
                         return axios(originalRequest);
@@ -30,6 +45,8 @@ export default function setup() {
                         return Promise.reject(error);
                     }
                 );
+            } else {
+                return Promise.reject(error);
             }
         }
     );

@@ -2,7 +2,6 @@
     <div>
         Some good detail info...
         <!-- {{ good.title }} -->
-        <!-- {{ good.title }} -->
     </div>
 </template>
 
@@ -18,13 +17,6 @@ export default {
     },
     computed: {
         ...mapGetters('goods', ['getGoodById'])
-    },
-    created() {
-        //let yee = this.getGoodById(0);
-        //console.log('yee:' + yee);
-        //this.good = yee;
-        //this.good.title = 'suka';
-        //this.good = this.getGoodById(this.$route.params.id);
     }
 };
 </script>
