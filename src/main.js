@@ -10,6 +10,10 @@ import { BTabs, BTab, BFormSelect, BFormSelectOption } from 'bootstrap-vue';
 import { routes } from './routes';
 import { store } from './store/store';
 
+import setup from './interceptors';
+
+setup();
+
 //* Fonts and icons
 import '@/assets/argon-design-system-free/assets/css/argon-design-system.css';
 

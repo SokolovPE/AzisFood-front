@@ -19,6 +19,21 @@ class AuthService {
             });
     }
 
+    renew(oldJwt) {
+        return axios.post(`${API_URL}/identity/renew`, oldJwt).then(
+            response => {
+                if (response.data.accessToken) {
+                    localStorage.setItem('user', JSON.stringify(response.data));
+                }
+
+                return response.data;
+            },
+            error => {
+                console.log(error);
+            }
+        );
+    }
+
     logout() {
         localStorage.removeItem('user');
     }
