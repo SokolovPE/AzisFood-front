@@ -44,7 +44,7 @@
                     <button
                         type="button"
                         class="list-group-item d-flex justify-content-between align-items-center list-group-item-action"
-                        v-for="cat in catsMDB"
+                        v-for="cat in cats"
                         :key="cat.id"
                         :class="{ active: cat.id == currentCat.id }"
                         @click="selectCat(cat)"
@@ -62,7 +62,7 @@
             </div>
             <div class="col col-12 col-md-12 col-sm-12 col-lg-10">
                 <div class="row" :class="{ 'justify-center': isMobile }">
-                    <good-card :category="currentCat" :forCreate="true" />
+                    <good-card :category="currentCatCountless" :forCreate="true" />
                     <good-card
                         v-for="good in goodsInCurretCat"
                         :key="good.id"
@@ -77,24 +77,18 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import GoodCard from '@/components/goods/GoodCard.vue';
-import CatalogService from '@/services/catalog.service';
-
 export default {
     data() {
         return {
-            newCatTitle: '',
-            currentCat: {
-                id: 0,
-                title: ''
-            },
-            catsMDB: []
+            newCatTitle: ''
         };
     },
     computed: {
-        ...mapGetters('goods', {
+        ...mapGetters('adminCatalog', {
             cats: 'getCategories',
-            goods: 'getGoods',
-            goodCntInCat: 'getGoodCntInCategory'
+            goods: 'getGoodsInCurrentCat',
+            currentCat: 'getCurrentCategory',
+            currentCatCountless: 'getCurrentCategoryWithoutCnt'
         }),
         goodsInCurretCat() {
             return (
@@ -108,51 +102,16 @@ export default {
         }
     },
     methods: {
-        ...mapActions('goods', [
+        ...mapActions('adminCatalog', [
             'fetchCats',
-            'setCats',
             'addCat',
-            'updateCat',
-            'removeCat',
-            'fetchGoods',
-            'setGoods'
+            'fetchGoodsInCurrentCat',
+            'selectCat'
         ]),
         pushCat() {
-            CatalogService.createCategory({ title: this.newCatTitle })
-                .then(response => {
-                    if (!response) {
-                        return;
-                    }
-                    let cat = response.data;
-                    cat.goodCnt = 0;
-                    this.catsMDB.push(cat);
-                })
-                .catch(error => {
-                    console.log(error);
-                })
-                .then(() => {
-                    this.newCatTitle = '';
-                });
-        },
-        selectCat(cat) {
-            this.currentCat = cat;
-        },
-        fetchCatsMDB() {
-            let vm = this;
-            CatalogService.getCategoriesWithCnt().then(response => {
-                vm.catsMDB = response.data;
+            this.addCat(this.newCatTitle).then(() => {
+                this.newCatTitle = '';
             });
-        },
-        getGoodCntInCatMDB(categoryId) {
-            CatalogService.getGoodCntInCategory(categoryId).then(
-                response => {
-                    return response.data;
-                },
-                error => {
-                    console.log(error);
-                    return 0;
-                }
-            );
         }
     },
     components: {
@@ -160,11 +119,8 @@ export default {
     },
     mounted() {
         this.fetchCats().then(() => {
-            this.fetchGoods().then(() => {
-                this.currentCat = this.cats[0] || null;
-            });
+            this.fetchGoodsInCurrentCat();
         });
-        this.fetchCatsMDB();
     }
 };
 </script>
@@ -177,7 +133,6 @@ export default {
 #new-cat {
     margin-bottom: 0.8rem;
 }
-
 .fake-splitter {
     height: 2rem;
 }

@@ -20,11 +20,23 @@ class CatalogService {
     }
 
     getGoodsInCategory(categoryId) {
-        return axios.get(`${API_URL}/goodsInCategory/${categoryId}`);
+        return axios.get(`${API_URL}/good/goodsInCategory/${categoryId}`);
     }
 
     getGoodCntInCategory(categoryId) {
         return axios.get(`${API_URL}/good/goodCntInCategory/${categoryId}`);
+    }
+
+    createGood(good) {
+        return axios.post(`${API_URL}/good`, good);
+    }
+
+    updateGood(goodId, good) {
+        return axios.put(`${API_URL}/good/${goodId}`, good);
+    }
+
+    deleteGood(goodId) {
+        return axios.delete(`${API_URL}/good/${goodId}`);
     }
 }
 

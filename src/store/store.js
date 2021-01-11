@@ -6,6 +6,7 @@ import Vuex from 'vuex';
 import todo from './modules/todo';
 import goods from './modules/goods';
 import auth from './modules/auth.module';
+import adminCatalog from './modules/adminCatalog.module';
 
 Vue.use(Vuex, VueAxios, axios);
 
@@ -17,6 +18,7 @@ export const store = new Vuex.Store({
     modules: {
         todo,
         goods,
-        auth
+        auth,
+        adminCatalog
     }
 });

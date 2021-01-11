@@ -36,8 +36,12 @@ export default function setup() {
                             store.dispatch('auth/logout');
                             return Promise.reject(error);
                         }
-                        axios.defaults.headers.common['Authorization'] =
-                            'Bearer ' + newJwt.accessToken;
+                        axios.defaults.headers.common[
+                            'Authorization'
+                        ] = `Bearer ${newJwt.accessToken}`;
+                        originalRequest.headers[
+                            'Authorization'
+                        ] = `Bearer ${newJwt.accessToken}`;
                         return axios(originalRequest);
                     },
                     error => {

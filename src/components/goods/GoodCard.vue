@@ -144,7 +144,9 @@ export default {
         };
     },
     computed: {
-        ...mapGetters('goods', ['getCategories']),
+        ...mapGetters('adminCatalog', {
+            getCategories: 'getCategoriesWithoutCnt'
+        }),
         coinVal: {
             get() {
                 return Math.floor(this.good.price);
@@ -166,7 +168,11 @@ export default {
         }
     },
     methods: {
-        ...mapActions('goods', ['addGood', 'updateGood', 'removeGoodById']),
+        ...mapActions('adminCatalog', [
+            'addGood',
+            'updateGood',
+            'removeGoodById'
+        ]),
         saveGood() {
             if (this.good.title == '' || this.good.price <= 0) {
                 return;
@@ -194,7 +200,7 @@ export default {
     },
     created() {
         this.good = this.valGood;
-        this.selectedCategory = this.good.category;
+        this.selectedCategory = {id: this.good.category.id, title: this.good.category.title };
     }
 };
 </script>
