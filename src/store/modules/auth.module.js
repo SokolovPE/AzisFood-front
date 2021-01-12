@@ -29,6 +29,10 @@ const actions = {
     },
     renew: ({ commit, getters }) => {
         let curUser = getters.user;
+        if (!curUser) {
+            curUser = JSON.parse(localStorage.getItem('user'));
+        }
+
         if (Date.parse(curUser.validTo) < Date.now()) {
             AuthService.renew({
                 accessToken: curUser.accessToken,

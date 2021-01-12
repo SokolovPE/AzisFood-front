@@ -141,6 +141,15 @@ const actions = {
         await CatalogService.deleteGood(payload).then(() => {
             commit('REMOVE_GOOD_BY_ID', payload);
         });
+    },
+    setGoodCntInCat: async ({ commit }, payload) => {
+        await CatalogService.getGoodCntInCategory(payload).then(response => {
+            commit('SET_CNT_IN_CAT', {
+                categoryId: payload,
+                count: response.data,
+                replace: true
+            });
+        });
     }
     // updateCat: async ({ commit }, payload) => {
     //     await axios

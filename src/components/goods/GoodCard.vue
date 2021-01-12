@@ -171,21 +171,32 @@ export default {
         ...mapActions('adminCatalog', [
             'addGood',
             'updateGood',
-            'removeGoodById'
+            'removeGoodById',
+            'setGoodCntInCat'
         ]),
         saveGood() {
             if (this.good.title == '' || this.good.price <= 0) {
                 return;
             }
-
+            //* Store old category to update count in category.
+            let oldCat = this.good.category;
+            //* Update category in good.
+            this.good.category = this.selectedCategory;
             if (this.forCreate) {
                 this.addGood(this.good).then(() => {
                     this.good = { ...GoodModel };
-                    this.good.category = this.selectedCategory;
+                    this.updateOldNewCat(oldCat.id, this.selectedCategory.id);
                 });
             } else {
-                this.good.category = this.selectedCategory;
-                this.updateGood(this.good);
+                this.updateGood(this.good).then(() => {
+                    this.updateOldNewCat(oldCat.id, this.selectedCategory.id);
+                });
+            }
+        },
+        updateOldNewCat(oldCatId, newCatId) {
+            this.setGoodCntInCat(oldCatId);
+            if (oldCatId != newCatId) {
+                this.setGoodCntInCat(newCatId);
             }
         }
     },
@@ -200,7 +211,10 @@ export default {
     },
     created() {
         this.good = this.valGood;
-        this.selectedCategory = {id: this.good.category.id, title: this.good.category.title };
+        this.selectedCategory = {
+            id: this.good.category.id,
+            title: this.good.category.title
+        };
     }
 };
 </script>
