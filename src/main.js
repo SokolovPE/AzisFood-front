@@ -22,7 +22,9 @@ import setup from './interceptors';
 setup();
 
 //* Fonts and icons
+import 'bootstrap/dist/css/bootstrap.css';
 import '@/assets/argon-design-system-free/assets/css/argon-design-system.css';
+import 'bootstrap-vue/dist/bootstrap-vue.css';
 
 //* Install BootstrapVue
 Vue.component('BTabs', BTabs);

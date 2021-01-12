@@ -140,7 +140,7 @@ export default {
                 centered: true,
                 hideBackdrop: true,
                 headerBgVariant: 'warning',
-                headerTextVariant: 'info',
+                headerTextVariant: 'light',
                 okTitle: 'Yes, I understand',
                 cancelTitle: 'Cancel'
             });
