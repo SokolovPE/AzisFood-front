@@ -67,6 +67,11 @@ export default {
             this.$emit('save');
             this.editMode = false;
         }
+    },
+    watch: {
+        editMode(newValue) {
+            this.$emit('edit-mode-changed', newValue);
+        }
     }
 };
 </script>

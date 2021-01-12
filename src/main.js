@@ -6,7 +6,14 @@ import VueRouter from 'vue-router';
 import VueMq from 'vue-mq';
 import VeeValidate from 'vee-validate';
 
-import { BTabs, BTab, BFormSelect, BFormSelectOption } from 'bootstrap-vue';
+import {
+    BTabs,
+    BTab,
+    BFormSelect,
+    BFormSelectOption,
+    BModal,
+    ModalPlugin
+} from 'bootstrap-vue';
 import { routes } from './routes';
 import { store } from './store/store';
 
@@ -22,6 +29,7 @@ Vue.component('BTabs', BTabs);
 Vue.component('BTab', BTab);
 Vue.component('BFormSelect', BFormSelect);
 Vue.component('BFormSelectOption', BFormSelectOption);
+Vue.component('BModal', BModal);
 //* Optionally install the BootstrapVue icon components plugin
 // Vue.use(IconsPlugin);
 
@@ -31,7 +39,7 @@ Vue.config.productionTip = false;
 Vue.use(VueAxios, axios);
 Vue.use(VueRouter);
 Vue.use(VeeValidate);
-
+Vue.use(ModalPlugin);
 //* Media queries.
 Vue.use(VueMq, {
     breakpoints: {

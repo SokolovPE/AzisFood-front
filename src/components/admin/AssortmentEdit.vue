@@ -29,7 +29,7 @@
                 <div class="form-group" v-if="isMobile">
                     <b-form-select
                         :value="currentCat"
-                        @change="selectCat($event)"
+                        @change="selectCategory($event)"
                         class="bc-primary"
                         id="catSelector"
                     >
@@ -48,7 +48,7 @@
                         v-for="cat in cats"
                         :key="cat.id"
                         :class="{ active: cat.id == currentCat.id }"
-                        @click="selectCat(cat)"
+                        @click="selectCategory(cat)"
                     >
                         {{ cat.title }}
                         <span
@@ -92,7 +92,8 @@ export default {
             cats: 'getCategories',
             goods: 'getGoodsInCurrentCat',
             currentCat: 'getCurrentCategory',
-            currentCatCountless: 'getCurrentCategoryWithoutCnt'
+            currentCatCountless: 'getCurrentCategoryWithoutCnt',
+            editsInProgress: 'getEditsInProgress'
         }),
         goodsInCurretCat() {
             return (
@@ -110,11 +111,38 @@ export default {
             'fetchCats',
             'addCat',
             'fetchGoodsInCurrentCat',
-            'selectCat'
+            'selectCat',
+            'clearEditsInProgress'
         ]),
         pushCat() {
             this.addCat(this.newCatTitle).then(() => {
                 this.newCatTitle = '';
+            });
+        },
+        selectCategory(category) {
+            if (this.editsInProgress && this.editsInProgress.length > 0) {
+                var vm = this;
+                this.showModal(
+                    'Do you really want to change category? You will loose all unsaved changes!'
+                ).then(answer => {
+                    if (answer) {
+                        vm.clearEditsInProgress();
+                        vm.selectCat(category);
+                    }
+                });
+            } else {
+                this.selectCat(category);
+            }
+        },
+        showModal(modalText) {
+            return this.$bvModal.msgBoxConfirm(modalText, {
+                title: 'Before you leave...',
+                centered: true,
+                hideBackdrop: true,
+                headerBgVariant: 'warning',
+                headerTextVariant: 'info',
+                okTitle: 'Yes, I understand',
+                cancelTitle: 'Cancel'
             });
         }
     },
@@ -125,6 +153,22 @@ export default {
         this.fetchCats().then(() => {
             this.fetchGoodsInCurrentCat();
         });
+    },
+    beforeRouteLeave(to, from, next) {
+        if (this.editsInProgress && this.editsInProgress.length > 0) {
+            this.showModal(
+                'Do you really want to leave this page? You will loose all unsaved changes!'
+            ).then(answer => {
+                if (answer) {
+                    this.clearEditsInProgress();
+                    next();
+                } else {
+                    next(false);
+                }
+            });
+        } else {
+            next();
+        }
     }
 };
 </script>

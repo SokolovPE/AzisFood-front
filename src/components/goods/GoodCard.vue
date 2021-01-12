@@ -10,6 +10,7 @@
         :createMode="forCreate"
         :showFooter="!forCreate"
         @save="saveGood"
+        @edit-mode-changed="editModeChanged"
     >
         <template v-slot:cardBody>
             <h5 class="card-title" v-if="forCreate">Add a new good</h5>
@@ -172,7 +173,8 @@ export default {
             'addGood',
             'updateGood',
             'removeGoodById',
-            'setGoodCntInCat'
+            'setGoodCntInCat',
+            'modifyEditInProgress'
         ]),
         saveGood() {
             if (this.good.title == '' || this.good.price <= 0) {
@@ -198,6 +200,12 @@ export default {
             if (oldCatId != newCatId) {
                 this.setGoodCntInCat(newCatId);
             }
+        },
+        editModeChanged(newValue) {
+            this.modifyEditInProgress({
+                goodId: this.good.id,
+                value: newValue
+            });
         }
     },
     components: {

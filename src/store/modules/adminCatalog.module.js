@@ -6,7 +6,8 @@ const state = {
     currentCategory: {
         id: 0,
         title: ''
-    }
+    },
+    editsInProgress: []
 };
 
 const getters = {
@@ -30,7 +31,8 @@ const getters = {
             title: state.currentCategory.title,
             id: state.currentCategory.id
         };
-    }
+    },
+    getEditsInProgress: state => state.editsInProgress
 };
 
 const mutations = {
@@ -80,6 +82,27 @@ const mutations = {
     UPDATE_GOOD(state, payload) {
         state.goodsInCategory = state.goodsInCategory.map(good =>
             good.id == payload.id ? payload : good
+        );
+    },
+    SET_EDIT_PROGRESS(state, payload) {
+        state.editsInProgress = payload;
+    },
+    ADD_EDIT_PROGRESS(state, payload) {
+        let editInProgress = state.editsInProgress.find(
+            edit => edit.goodId == payload.goodId && edit.value == payload.value
+        );
+        if (!editInProgress) {
+            state.editsInProgress.push(payload);
+        }
+    },
+    UPDATE_EDIT_PROGRESS(state, payload) {
+        state.editsInProgress = state.editsProgress.map(edit =>
+            edit.goodId == payload.goodId ? payload : edit
+        );
+    },
+    REMOVE_EDIT_PROGRESS(state, payload) {
+        state.editsInProgress = state.editsInProgress.filter(
+            edit => edit.goodId != payload.goodId
         );
     }
 };
@@ -150,7 +173,7 @@ const actions = {
                 replace: true
             });
         });
-    }
+    },
     // updateCat: async ({ commit }, payload) => {
     //     await axios
     //         .patch(
@@ -171,6 +194,16 @@ const actions = {
     //             commit('REMOVE_CAT', payload);
     //         });
     // }
+    modifyEditInProgress: ({ commit }, payload) => {
+        if (payload.value) {
+            commit('ADD_EDIT_PROGRESS', payload);
+        } else {
+            commit('REMOVE_EDIT_PROGRESS', payload);
+        }
+    },
+    clearEditsInProgress: ({ commit }) => {
+        commit('SET_EDIT_PROGRESS', []);
+    }
 };
 
 export default {
