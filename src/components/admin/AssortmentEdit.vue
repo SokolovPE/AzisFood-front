@@ -28,7 +28,8 @@
                 </form>
                 <div class="form-group" v-if="isMobile">
                     <b-form-select
-                        v-model="currentCat"
+                        :value="currentCat"
+                        @change="selectCat($event)"
                         class="bc-primary"
                         id="catSelector"
                     >
@@ -62,7 +63,10 @@
             </div>
             <div class="col col-12 col-md-12 col-sm-12 col-lg-10">
                 <div class="row" :class="{ 'justify-center': isMobile }">
-                    <good-card :category="currentCatCountless" :forCreate="true" />
+                    <good-card
+                        :category="currentCatCountless"
+                        :forCreate="true"
+                    />
                     <good-card
                         v-for="good in goodsInCurretCat"
                         :key="good.id"
