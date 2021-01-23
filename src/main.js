@@ -11,8 +11,12 @@ import {
     BTab,
     BFormSelect,
     BFormSelectOption,
+    BListGroup,
     BModal,
-    ModalPlugin
+    BButton,
+    //BButtonGroup,
+    ModalPlugin,
+    IconsPlugin
 } from 'bootstrap-vue';
 import { routes } from './routes';
 import { store } from './store/store';
@@ -32,8 +36,11 @@ Vue.component('BTab', BTab);
 Vue.component('BFormSelect', BFormSelect);
 Vue.component('BFormSelectOption', BFormSelectOption);
 Vue.component('BModal', BModal);
+Vue.component('BListGroup', BListGroup);
+Vue.component('BButton', BButton);
+//Vue.component('BButtonGroup', BButtonGroup);
 //* Optionally install the BootstrapVue icon components plugin
-// Vue.use(IconsPlugin);
+Vue.use(IconsPlugin);
 
 //* Scripts.
 Vue.config.productionTip = false;

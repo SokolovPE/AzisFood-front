@@ -42,9 +42,9 @@ const mutations = {
     ADD_CAT(state, payload) {
         state.categories.push(payload);
     },
-    // REMOVE_CAT(state, payload) {
-    //     state.categories = state.categories.filter(cat => cat != payload);
-    // },
+    REMOVE_CAT(state, payload) {
+        state.categories = state.categories.filter(cat => cat.id !== payload);
+    },
     // UPDATE_CAT(state, payload) {
     //     state.categories = state.categories.map(cat =>
     //         cat.id == payload.id ? payload : cat
@@ -60,6 +60,9 @@ const mutations = {
         let catToUpd = state.categories.find(
             cat => cat.id == payload.categoryId
         );
+        if (!catToUpd) {
+            return;
+        }
         if (payload.replace) {
             catToUpd.goodCnt = payload.count;
         } else {
@@ -187,13 +190,11 @@ const actions = {
     //             console.error(`Error during updating cat: ${error}`);
     //         });
     // },
-    // removeCat: ({ commit }, payload) => {
-    //     axios
-    //         .delete(`${categoriesUrl.replace('.json', '')}/${payload.id}.json`)
-    //         .then(() => {
-    //             commit('REMOVE_CAT', payload);
-    //         });
-    // }
+    removeCatById: async ({ commit }, payload) => {
+        await CatalogService.deleteCategory(payload).then(() => {
+            commit('REMOVE_CAT', payload);
+        });
+    },
     modifyEditInProgress: ({ commit }, payload) => {
         if (payload.value) {
             commit('ADD_EDIT_PROGRESS', payload);

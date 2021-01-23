@@ -15,6 +15,10 @@ class CatalogService {
         return axios.post(`${API_URL}/category`, category);
     }
 
+    deleteCategory(categoryId) {
+        return axios.delete(`${API_URL}/category/${categoryId}`);
+    }
+
     getGoods() {
         return axios.get(`${API_URL}/good`);
     }

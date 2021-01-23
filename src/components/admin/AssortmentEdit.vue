@@ -50,14 +50,21 @@
                         :class="{ active: cat.id == currentCat.id }"
                         @click="selectCategory(cat)"
                     >
-                        {{ cat.title }}
-                        <span
-                            class="badge badge-primary badge-pill"
-                            :class="{
-                                'badge-secondary': cat.id == currentCat.id
-                            }"
-                            >{{ cat.goodCnt }}</span
-                        >
+                        <div class="li-prepend">
+                            <span
+                                class="badge badge-primary badge-pill"
+                                :class="{
+                                    'badge-secondary': cat.id == currentCat.id
+                                }"
+                                >{{ cat.goodCnt }}</span
+                            >
+                            <span style="vertical-align: sub">{{
+                                cat.title
+                            }}</span>
+                        </div>
+                        <b-button pill size="sm" @click="removeCatById(cat.id)"
+                            ><b-icon icon="trash2-fill"></b-icon
+                        ></b-button>
                     </button>
                 </div>
             </div>
@@ -112,7 +119,8 @@ export default {
             'addCat',
             'fetchGoodsInCurrentCat',
             'selectCat',
-            'clearEditsInProgress'
+            'clearEditsInProgress',
+            'removeCatById'
         ]),
         pushCat() {
             this.addCat(this.newCatTitle).then(() => {
@@ -183,5 +191,11 @@ export default {
 }
 .fake-splitter {
     height: 2rem;
+}
+
+.li-prepend {
+    span + span {
+        padding-left: 0.3rem;
+    }
 }
 </style>
