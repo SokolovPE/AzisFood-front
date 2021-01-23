@@ -119,8 +119,8 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import EditableCard from '@/components/UI/EditableCard.vue';
-import { GoodModel } from '@/models/GoodModels';
+import EditableCard from '@/modules/common/components/EditableCard.vue';
+import { GoodModel } from '@/modules/common/models/GoodModel';
 
 export default {
     props: {

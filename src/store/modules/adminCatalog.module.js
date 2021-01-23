@@ -1,4 +1,4 @@
-import CatalogService from '../../services/catalog.service';
+import AdminCatalogService from '@/modules/admin/catalog/services/adminCatalog.service';
 
 const state = {
     categories: [],
@@ -112,20 +112,22 @@ const mutations = {
 
 const actions = {
     fetchCats: async ({ commit, getters }) => {
-        await CatalogService.getCategoriesWithCnt().then(response => {
+        await AdminCatalogService.getCategoriesWithCnt().then(response => {
             commit('SET_CATS', response.data);
             let newCurrentCat = getters.getCategories[0] || null;
             commit('SET_CURRENT_CAT', newCurrentCat);
         });
     },
     addCat: async ({ commit }, title) => {
-        await CatalogService.createCategory({ title: title }).then(response => {
-            if (response.status == 201) {
-                let cat = response.data;
-                cat.goodCnt = 0;
-                commit('ADD_CAT', cat);
+        await AdminCatalogService.createCategory({ title: title }).then(
+            response => {
+                if (response.status == 201) {
+                    let cat = response.data;
+                    cat.goodCnt = 0;
+                    commit('ADD_CAT', cat);
+                }
             }
-        });
+        );
     },
     selectCat: ({ commit, dispatch }, payload) => {
         commit('SET_CURRENT_CAT', payload);
@@ -133,17 +135,19 @@ const actions = {
     },
     fetchGoodsInCurrentCat: async ({ commit, getters }) => {
         let categoryId = getters.getCurrentCategory.id;
-        await CatalogService.getGoodsInCategory(categoryId).then(response => {
-            commit('SET_GOODS_IN_CAT', response.data);
-            commit('SET_CNT_IN_CAT', {
-                categoryId: categoryId,
-                count: response.data.length,
-                replace: true
-            });
-        });
+        await AdminCatalogService.getGoodsInCategory(categoryId).then(
+            response => {
+                commit('SET_GOODS_IN_CAT', response.data);
+                commit('SET_CNT_IN_CAT', {
+                    categoryId: categoryId,
+                    count: response.data.length,
+                    replace: true
+                });
+            }
+        );
     },
     updateGood: async ({ commit }, payload) => {
-        await CatalogService.updateGood(payload.id, payload)
+        await AdminCatalogService.updateGood(payload.id, payload)
             .then(() => {
                 commit('UPDATE_GOOD', payload);
             })
@@ -152,7 +156,7 @@ const actions = {
             });
     },
     addGood: async ({ commit }, payload) => {
-        await CatalogService.createGood(payload).then(result => {
+        await AdminCatalogService.createGood(payload).then(result => {
             if (result.status == 201) {
                 commit('ADD_GOOD', result.data);
                 commit('SET_CNT_IN_CAT', {
@@ -164,18 +168,20 @@ const actions = {
         });
     },
     removeGoodById: async ({ commit }, payload) => {
-        await CatalogService.deleteGood(payload).then(() => {
+        await AdminCatalogService.deleteGood(payload).then(() => {
             commit('REMOVE_GOOD_BY_ID', payload);
         });
     },
     setGoodCntInCat: async ({ commit }, payload) => {
-        await CatalogService.getGoodCntInCategory(payload).then(response => {
-            commit('SET_CNT_IN_CAT', {
-                categoryId: payload,
-                count: response.data,
-                replace: true
-            });
-        });
+        await AdminCatalogService.getGoodCntInCategory(payload).then(
+            response => {
+                commit('SET_CNT_IN_CAT', {
+                    categoryId: payload,
+                    count: response.data,
+                    replace: true
+                });
+            }
+        );
     },
     // updateCat: async ({ commit }, payload) => {
     //     await axios
@@ -191,7 +197,7 @@ const actions = {
     //         });
     // },
     removeCatById: async ({ commit }, payload) => {
-        await CatalogService.deleteCategory(payload).then(() => {
+        await AdminCatalogService.deleteCategory(payload).then(() => {
             commit('REMOVE_CAT', payload);
         });
     },

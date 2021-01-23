@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import CatalogService from '../services/catalog.service';
+import CatalogService from '@/modules/public/catalog/services/catalog.service';
 export default {
     name: 'Catalog',
     data() {

@@ -1,5 +1,5 @@
-import Home from '@/components/Home.vue';
-import Error404 from '@/components/Views/Errors/Error404.vue';
+import Home from '@/modules/common/views/Home.vue';
+import Error404 from '@/modules/common/views/errors/Error404.vue';
 
 //* Webpack will recognize wthis syntax to lazy load parts.
 // Whenever we want to laod something in ensure's firest argument,
@@ -7,37 +7,37 @@ import Error404 from '@/components/Views/Errors/Error404.vue';
 // So those parts will be loaded when they really needed.
 const AssortmentEdit = resolve => {
     require.ensure(
-        ['@/components/admin/AssortmentEdit.vue'],
+        ['@/modules/admin/catalog/views/AssortmentEdit.vue'],
         () => {
-            resolve(require('@/components/admin/AssortmentEdit.vue'));
+            resolve(
+                require('@/modules/admin/catalog/views/AssortmentEdit.vue')
+            );
         },
         'admin'
     );
 };
 
 const RootAdmin = resolve => {
-    require.ensure(['@/components/admin/Admin.vue'], () => {
-        resolve(require('@/components/admin/Admin.vue'));
-    });
-};
-
-const RootGoods = resolve => {
-    require.ensure(['@/components/goods/RootGoods.vue'], () => {
-        resolve(require('@/components/goods/RootGoods.vue'));
+    require.ensure(['@/modules/admin/common/views/AdminRoot.vue'], () => {
+        resolve(require('@/modules/admin/common/views/AdminRoot.vue'));
     });
 };
 
 const GoodDetail = resolve => {
-    require.ensure(['@/components/goods/GoodDetail.vue'], () => {
-        resolve(require('@/components/goods/GoodDetail.vue'));
-    });
+    require.ensure(
+        ['@/modules/public/catalog/views/GoodDetail.vue'],
+        () => {
+            resolve(require('@/modules/public/catalog/views/GoodDetail.vue'));
+        },
+        'goodDetail'
+    );
 };
 
-const AdminStart = resolve => {
+const AdminHome = resolve => {
     require.ensure(
-        ['@/components/admin/AdminStart.vue'],
+        ['@/modules/admin/common/views/AdminHome.vue'],
         () => {
-            resolve(require('@/components/admin/AdminStart.vue'));
+            resolve(require('@/modules/admin/common/views/AdminHome.vue'));
         },
         'admin'
     );
@@ -45,9 +45,9 @@ const AdminStart = resolve => {
 
 const Login = resolve => {
     require.ensure(
-        ['@/views/Login.vue'],
+        ['@/modules/authentication/views/Login.vue'],
         () => {
-            resolve(require('@/views/Login.vue'));
+            resolve(require('@/modules/authentication/views/Login.vue'));
         },
         'login'
     );
@@ -55,11 +55,21 @@ const Login = resolve => {
 
 const Register = resolve => {
     require.ensure(
-        ['@/views/Register.vue'],
+        ['@/modules/authentication/views/Register.vue'],
         () => {
-            resolve(require('@/views/Register.vue'));
+            resolve(require('@/modules/authentication/views/Register.vue'));
         },
         'register'
+    );
+};
+
+const Profile = resolve => {
+    require.ensure(
+        ['@/modules/authentication/views/Profile.vue'],
+        () => {
+            resolve(require('@/modules/authentication/views/Profile.vue'));
+        },
+        'profile'
     );
 };
 
@@ -73,16 +83,6 @@ const Catalog = resolve => {
     );
 };
 
-const Profile = resolve => {
-    require.ensure(
-        ['@/views/Profile.vue'],
-        () => {
-            resolve(require('@/views/Profile.vue'));
-        },
-        'profile'
-    );
-};
-
 export const routes = [
     {
         path: '',
@@ -90,22 +90,10 @@ export const routes = [
         component: Home
     },
     {
-        path: '/goods', // or menu?
-        alias: '/admin/good-detail',
-        component: RootGoods,
-        children: [
-            {
-                path: ':id',
-                name: 'goodDetail',
-                component: GoodDetail
-            }
-        ]
-    },
-    {
         path: '/admin',
         component: RootAdmin,
         children: [
-            { path: '', component: AdminStart },
+            { path: '', component: AdminHome },
             {
                 path: 'assortment',
                 name: 'assortmentEdit',
@@ -116,6 +104,11 @@ export const routes = [
                 redirect: { name: 'goodDetail' }
             }
         ]
+    },
+    {
+        path: '/good-detail/:id',
+        name: 'goodDetail',
+        component: GoodDetail
     },
     {
         path: '/login',

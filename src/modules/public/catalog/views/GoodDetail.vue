@@ -7,7 +7,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { GoodModel } from '@/models/GoodModels';
+import { GoodModel } from '@/modules/common/models/GoodModel';
 
 export default {
     data() {

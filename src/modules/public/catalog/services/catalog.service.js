@@ -11,14 +11,6 @@ class CatalogService {
         return axios.get(`${API_URL}/category/getWithCnt`);
     }
 
-    createCategory(category) {
-        return axios.post(`${API_URL}/category`, category);
-    }
-
-    deleteCategory(categoryId) {
-        return axios.delete(`${API_URL}/category/${categoryId}`);
-    }
-
     getGoods() {
         return axios.get(`${API_URL}/good`);
     }
@@ -30,18 +22,7 @@ class CatalogService {
     getGoodCntInCategory(categoryId) {
         return axios.get(`${API_URL}/good/goodCntInCategory/${categoryId}`);
     }
-
-    createGood(good) {
-        return axios.post(`${API_URL}/good`, good);
-    }
-
-    updateGood(goodId, good) {
-        return axios.put(`${API_URL}/good/${goodId}`, good);
-    }
-
-    deleteGood(goodId) {
-        return axios.delete(`${API_URL}/good/${goodId}`);
-    }
 }
 
 export default new CatalogService();
+export { CatalogService, API_URL };

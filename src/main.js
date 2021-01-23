@@ -18,7 +18,7 @@ import {
     ModalPlugin,
     IconsPlugin
 } from 'bootstrap-vue';
-import { routes } from './routes';
+import { routes } from './router/routes';
 import { store } from './store/store';
 
 import setup from './interceptors';

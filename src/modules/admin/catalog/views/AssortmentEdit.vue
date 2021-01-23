@@ -15,8 +15,8 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import CategoryListEditor from '@/components/admin/categories/CategoryListEditor.vue';
-import GoodListEditor from '@/components/admin/categories/GoodListEditor.vue';
+import CategoryListEditor from '@/modules/admin/catalog/components/CategoryListEditor.vue';
+import GoodListEditor from '@/modules/admin/catalog/components/GoodListEditor.vue';
 export default {
     computed: {
         ...mapGetters('adminCatalog', {

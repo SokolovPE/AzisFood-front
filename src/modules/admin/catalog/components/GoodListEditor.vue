@@ -11,7 +11,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import GoodCard from '@/components/goods/GoodCard.vue';
+import GoodCard from '@/modules/admin/catalog/components/EditableGoodCard.vue';
 export default {
     computed: {
         ...mapGetters('adminCatalog', {
