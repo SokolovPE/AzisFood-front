@@ -33,6 +33,11 @@ const actions = {
             curUser = JSON.parse(localStorage.getItem('user'));
         }
 
+        if (!curUser) {
+            this.logout();
+            return Promise.reject('No user was found in local storage');
+        }
+
         if (Date.parse(curUser.validTo) < Date.now()) {
             AuthService.renew({
                 accessToken: curUser.accessToken,
