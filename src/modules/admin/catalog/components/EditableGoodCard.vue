@@ -23,23 +23,23 @@
             <b-tabs content-class="mt-3">
                 <b-tab title="Main" active>
                     <div class="form-group">
-                        <label for="goodTitleEdit" class="pull-left"
+                        <label for="good-title-edit" class="pull-left"
                             >Title</label
                         >
                         <input
                             type="text"
-                            id="goodTitleEdit"
+                            id="good-title-edit"
                             class="form-control form-control-alternative"
                             v-model="good.title"
                         />
                     </div>
                     <div class="form-group">
-                        <label for="goodCategoryEdit" class="pull-left"
+                        <label for="good-category-edit" class="pull-left"
                             >Category</label
                         >
                         <b-form-select
                             v-model="selectedCategory"
-                            id="goodCategoryEdit"
+                            id="good-category-edit"
                             required
                         >
                             <b-form-select-option
@@ -51,18 +51,18 @@
                         </b-form-select>
                     </div>
                     <div class="form-group">
-                        <label for="goodImgSrcEdit" class="pull-left"
+                        <label for="good-img-src-edit" class="pull-left"
                             >Image Source</label
                         >
                         <input
                             type="text"
-                            id="goodImgSrcEdit"
+                            id="good-img-src-edit"
                             class="form-control form-control-alternative"
                             v-model="good.imgUrl"
                         />
                     </div>
                     <div class="form-group">
-                        <label for="goodPriceEdit" class="pull-left"
+                        <label for="good-price-edit" class="pull-left"
                             >Price</label
                         >
                         <div class="input-group mb-3">
@@ -73,7 +73,7 @@
                                 type="number"
                                 min="0"
                                 max="9999"
-                                id="goodPriceCoinEdit"
+                                id="good-price-coin-edit"
                                 class="form-control"
                                 v-model="coinVal"
                             />
@@ -83,7 +83,7 @@
                             <input
                                 type="number"
                                 min="0"
-                                id="goodPriceChangeEdit"
+                                id="good-price-change-edit"
                                 class="form-control"
                                 v-model="changeVal"
                             />
@@ -92,11 +92,11 @@
                 </b-tab>
                 <b-tab title="Additional"
                     ><div class="form-group">
-                        <label for="goodDescEdit" class="pull-left"
+                        <label for="good-desc-edit" class="pull-left"
                             >Description</label
                         >
                         <textarea
-                            id="goodDescEdit"
+                            id="good-desc-edit"
                             class="form-control form-control-alternative"
                             :rows="forCreate ? 12 : 10"
                             placeholder="Write description text here ..."

@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="form-group" v-if="isMobile">
-            <h5 for="catSelector" class="pull-left">Category</h5>
+            <h5 for="cat-selector" class="pull-left">Category</h5>
         </div>
         <form id="new-cat" @submit.prevent="pushCat">
             <div class="input-group">
@@ -24,7 +24,7 @@
                 :value="currentCat"
                 @change="selectCategory($event)"
                 class="bc-primary"
-                id="catSelector"
+                id="cat-selector"
             >
                 <b-form-select-option
                     v-for="cat in cats"
@@ -51,9 +51,9 @@
                         }"
                         >{{ cat.goodCnt }}</span
                     >
-                    <span style="vertical-align: sub">{{ cat.title }}</span>
+                    <span class="category-title">{{ cat.title }}</span>
                 </div>
-                <b-button pill size="sm" @click="removeCatById(cat.id)"
+                <b-button pill size="sm" @click="removeCategory(cat)"
                     ><b-icon icon="trash2-fill"></b-icon
                 ></b-button>
             </button>
@@ -97,6 +97,7 @@ export default {
             if (this.editsInProgress && this.editsInProgress.length > 0) {
                 var vm = this;
                 this.showModal(
+                    'Before you leave...',
                     'Do you really want to change category? You will loose all unsaved changes!'
                 ).then(answer => {
                     if (answer) {
@@ -108,9 +109,24 @@ export default {
                 this.selectCat(category);
             }
         },
-        showModal(modalText) {
+        removeCategory(category) {
+            var vm = this;
+            this.showModal(
+                `Delete category ${category.title} and all goods in it?`,
+                `Do you really want to delete category ${category.title} and ${category.goodCnt} good(s) in it? This action can not be reverted!`
+            ).then(answer => {
+                if (answer) {
+                    vm.removeCatById(category.id).then(() => {
+                        if (vm.cats[0]) {
+                            vm.selectCat(vm.cats[0]);
+                        }
+                    });
+                }
+            });
+        },
+        showModal(title, modalText) {
             return this.$bvModal.msgBoxConfirm(modalText, {
-                title: 'Before you leave...',
+                title: title,
                 centered: true,
                 hideBackdrop: true,
                 headerBgVariant: 'warning',
@@ -124,7 +140,7 @@ export default {
         this.fetchCats().then(() => {
             this.fetchGoodsInCurrentCat();
         });
-    },
+    }
 };
 </script>
 
@@ -133,5 +149,9 @@ export default {
     span + span {
         padding-left: 0.3rem;
     }
+}
+
+.category-title {
+    vertical-align: sub;
 }
 </style>
