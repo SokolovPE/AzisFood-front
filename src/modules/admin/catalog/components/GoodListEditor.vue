@@ -1,17 +1,19 @@
 <template>
     <div class="row" :class="{ 'justify-center': isMobile }">
-        <good-card :category="currentCatCountless" :forCreate="true" />
+        <good-grid :goods="goodsInCurretCat" />
+        <!-- <good-card :category="currentCatCountless" :forCreate="true" />
         <good-card
             v-for="good in goodsInCurretCat"
             :key="good.id"
             :valGood="good"
-        />
+        /> -->
     </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
 import GoodCard from '@/modules/admin/catalog/components/EditableGoodCard.vue';
+import GoodGrid from '@/modules/admin/catalog/components/GoodGrid.vue';
 export default {
     computed: {
         ...mapGetters('adminCatalog', {
@@ -32,7 +34,8 @@ export default {
         }
     },
     components: {
-        'good-card': GoodCard
+        'good-card': GoodCard,
+        'good-grid': GoodGrid
     }
 };
 </script>

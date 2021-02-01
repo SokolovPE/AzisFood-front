@@ -53,9 +53,15 @@
                     >
                     <span class="category-title">{{ cat.title }}</span>
                 </div>
-                <b-button pill size="sm" @click="removeCategory(cat)"
-                    ><b-icon icon="trash2-fill"></b-icon
-                ></b-button>
+
+                <b-button-group>
+                    <b-button size="sm" @click="editCategory(cat)"
+                        ><b-icon icon="pencil-fill"></b-icon
+                    ></b-button>
+                    <b-button size="sm" @click="removeCategory(cat)"
+                        ><b-icon icon="trash2-fill"></b-icon
+                    ></b-button>
+                </b-button-group>
             </button>
         </div>
     </div>
@@ -108,6 +114,9 @@ export default {
             } else {
                 this.selectCat(category);
             }
+        },
+        editCategory(category) {
+            category.editMode = false;
         },
         removeCategory(category) {
             var vm = this;

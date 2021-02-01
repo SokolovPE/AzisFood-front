@@ -6,15 +6,20 @@ import VueRouter from 'vue-router';
 import VueMq from 'vue-mq';
 import VeeValidate from 'vee-validate';
 
+import { AgGridVue } from 'ag-grid-vue';
 import {
     BTabs,
     BTab,
+    BTable,
+    BImg,
+    BImgLazy,
+    BFormInput,
     BFormSelect,
     BFormSelectOption,
     BListGroup,
     BModal,
     BButton,
-    //BButtonGroup,
+    BButtonGroup,
     ModalPlugin,
     IconsPlugin
 } from 'bootstrap-vue';
@@ -29,16 +34,26 @@ setup();
 import 'bootstrap/dist/css/bootstrap.css';
 import '@/assets/argon-design-system-free/assets/css/argon-design-system.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
+import 'ag-grid-community/dist/styles/ag-grid.min.css';
+import 'ag-grid-community/dist/styles/ag-theme-material.min.css';
+import 'ag-grid-community/dist/styles/ag-theme-alpine.min.css';
+import vuetify from './plugins/vuetify';
 
 //* Install BootstrapVue
 Vue.component('BTabs', BTabs);
 Vue.component('BTab', BTab);
+Vue.component('BFormInput', BFormInput);
 Vue.component('BFormSelect', BFormSelect);
 Vue.component('BFormSelectOption', BFormSelectOption);
 Vue.component('BModal', BModal);
 Vue.component('BListGroup', BListGroup);
 Vue.component('BButton', BButton);
-//Vue.component('BButtonGroup', BButtonGroup);
+Vue.component('BButtonGroup', BButtonGroup);
+Vue.component('BTable', BTable);
+Vue.component('BImg', BImg);
+Vue.component('BImgLazy', BImgLazy);
+
+Vue.component('ag-grid', AgGridVue);
 //* Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin);
 
@@ -96,5 +111,6 @@ router.beforeEach((to, from, next) => {
 new Vue({
     router,
     store,
+    vuetify,
     render: h => h(App)
 }).$mount('#app');
