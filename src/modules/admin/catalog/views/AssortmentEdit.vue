@@ -1,21 +1,23 @@
 <template>
     <div>
         <!-- Remove this when component will really be used!!! -->
-        <div class="fake-splitter"></div>
-        <div class="row" id="assort-edit-wrapper">
+        <div>
+            <good-editor />
+        </div>
+        <!-- <div class="row" id="assort-edit-wrapper">
             <div class="col col-12 col-md-12 col-sm-12 col-lg-2">
                 <category-editor />
             </div>
             <div class="col col-12 col-md-12 col-sm-12 col-lg-10">
                 <good-editor />
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import CategoryListEditor from '@/modules/admin/catalog/components/CategoryListEditor.vue';
+//import CategoryListEditor from '@/modules/admin/catalog/components/CategoryListEditor.vue';
 import GoodListEditor from '@/modules/admin/catalog/components/GoodListEditor.vue';
 export default {
     computed: {
@@ -64,20 +66,20 @@ export default {
         }
     },
     components: {
-        'category-editor': CategoryListEditor,
+        //'category-editor': CategoryListEditor,
         'good-editor': GoodListEditor
     }
 };
 </script>
 
 <style lang="scss" scoped>
-#assort-edit-wrapper {
-    margin-right: 0;
-    margin-left: 0;
-}
-#new-cat {
-    margin-bottom: 0.8rem;
-}
+// #assort-edit-wrapper {
+//     margin-right: 0;
+//     margin-left: 0;
+// }
+// #new-cat {
+//     margin-bottom: 0.8rem;
+// }
 .fake-splitter {
     height: 2rem;
 }

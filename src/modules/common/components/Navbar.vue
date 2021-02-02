@@ -1,129 +1,51 @@
 <template>
-    <div>
-        <header
-            class="navbar navbar-horizontal navbar-expand navbar-dark flex-row align-items-md-center ct-navbar bg-primary py-2"
-        >
+    <v-app-bar color="primary" app>
+        <v-app-bar-nav-icon color="white"></v-app-bar-nav-icon>
+        <v-toolbar-title>
             <router-link
                 :to="{ name: 'home' }"
                 tag="a"
-                class="navbar-brand mr-0 mr-md-2 ml-0 ml-md-2"
+                class="nav-brand"
                 active-class="active"
-                aria-label="Bootstrap"
+                aria-label="AzisFood"
                 exact
                 ><img src="@/assets/brand/logo.png" style="40px"
             /></router-link>
-            <ul class="navbar-nav flex-row mr-auto ml-4 d-none d-md-flex">
-                <router-link
-                    to="/admin"
-                    tag="li"
-                    class="nav-item"
-                    active-class="active"
-                    exact
-                    ><a class="nav-link">Admin</a></router-link
-                >
-                <router-link
-                    :to="{ name: 'assortmentEdit' }"
-                    tag="li"
-                    class="nav-item"
-                    active-class="active"
-                    exact
-                    ><a class="nav-link">Assortment</a></router-link
-                >
-                <router-link
-                    to="/catalog"
-                    tag="li"
-                    class="nav-item"
-                    active-class="active"
-                    exact
-                    ><a class="nav-link">Catalog</a></router-link
-                >
-                <router-link
-                    to="/profile"
-                    tag="li"
-                    class="nav-item"
-                    active-class="active"
-                    exact
-                    ><a class="nav-link">Profile</a></router-link
-                >
-            </ul>
-            <div class="d-none d-sm-block ml-auto">
-                <ul
-                    class="navbar-nav ct-navbar-nav flex-row align-items-center"
-                >
-                    <li class="nav-item">
-                        <a
-                            class="nav-link nav-link-icon"
-                            href=""
-                            rel="nofollow"
-                            target="_blank"
-                        >
-                            <i class="fab fa-facebook-square"></i>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a
-                            class="nav-link nav-link-icon"
-                            href="https://twitter.com"
-                            rel="nofollow"
-                            target="_blank"
-                        >
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a
-                            class="nav-link nav-link-icon"
-                            href="https://www.instagram.com"
-                            rel="nofollow"
-                            target="_blank"
-                        >
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a
-                            class="nav-link nav-link-icon"
-                            href="https://dribbble.com"
-                            rel="nofollow"
-                            target="_blank"
-                        >
-                            <i class="fab fa-dribbble"></i>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a
-                            class="nav-link nav-link-icon"
-                            href="https://github.com"
-                            rel="nofollow"
-                            target="_blank"
-                        >
-                            <i class="fab fa-github"></i>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <li class="nav-item d-none d-lg-block ml-lg-4">
-                <a href="" target="_blank" class="btn btn-neutral btn-icon">
-                    <span class="btn-inner--icon">
-                        <i class="fa fa-shopping-cart"></i>
-                    </span>
-                    <span class="nav-link-inner--text">Cart</span>
-                </a>
-            </li>
-            <button
-                class="navbar-toggler ct-search-docs-toggle d-block d-md-none ml-auto ml-sm-0"
-                type="button"
-                data-toggle="collapse"
-                data-target="#ct-docs-nav"
-                aria-controls="ct-docs-nav"
-                aria-expanded="false"
-                aria-label="Toggle docs navigation"
-                @click="goToAssortment"
+        </v-toolbar-title>
+        <v-container class="py-0 ml-0 fill-height">
+            <router-link to="/admin" tag="a" active-class="active" exact
+                ><v-btn text color="white">Admin</v-btn></router-link
             >
-                <span class="navbar-toggler-icon"></span>
-            </button>
-        </header>
-    </div>
+            <router-link
+                :to="{ name: 'assortmentEdit' }"
+                tag="a"
+                active-class="active"
+                exact
+                ><v-btn text color="white">Assortment</v-btn></router-link
+            >
+            <router-link to="/catalog" tag="a" active-class="active" exact
+                ><v-btn text color="white">Catalog</v-btn></router-link
+            >
+            <router-link
+                to="/profile"
+                tag="a"
+                class="nav-item"
+                active-class="active"
+                exact
+                ><v-btn text color="white">Profile</v-btn></router-link
+            >
+            <v-spacer></v-spacer>
+            <v-responsive max-width="260">
+                <v-text-field
+                    dense
+                    flat
+                    hide-details
+                    rounded
+                    solo-inverted
+                ></v-text-field>
+            </v-responsive>
+        </v-container>
+    </v-app-bar>
 </template>
 
 <script>
@@ -136,4 +58,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.nav-brand img {
+    height: 30px;
+}
+</style>
