@@ -1,29 +1,18 @@
 <template>
-    <v-container class="py-0 mb-2 fill-height">
-        <div>
-            <v-chip
-                v-for="cat in cats"
-                :key="cat.id"
-                class="mr-2"
-                color="primary"
-                @click="selectCategory(cat)"
-            >
-                <v-avatar left color="grey lighten-5 primary--text">{{
-                    cat.goodCnt
-                }}</v-avatar>
-                {{ cat.title }}</v-chip
-            >
-        </div>
-        <v-spacer></v-spacer>
-        <div>
-            <v-btn rounded color="primary" dark
-                ><v-icon left> mdi-pencil </v-icon>Add category</v-btn
-            >
-            <v-btn rounded color="primary" dark
-                ><v-icon left> mdi-plus </v-icon>Add good</v-btn
-            >
-        </div>
-    </v-container>
+    <v-chip-group>
+        <v-chip
+            v-for="cat in cats"
+            :key="cat.id"
+            class="mr-2"
+            color="blue accent-2 white--text"
+            @click="selectCategory(cat)"
+        >
+            <v-avatar left color="grey lighten-5 primary--text">{{
+                cat.goodCnt
+            }}</v-avatar>
+            {{ cat.title }}</v-chip
+        >
+    </v-chip-group>
 </template>
 
 <script>

@@ -5,6 +5,7 @@ import Vuex from 'vuex';
 
 import auth from './modules/auth.module';
 import adminCatalog from './modules/adminCatalog.module';
+import ui from './modules/ui.module';
 
 Vue.use(Vuex, VueAxios, axios);
 
@@ -15,6 +16,7 @@ export const store = new Vuex.Store({
     actions: {},
     modules: {
         auth,
-        adminCatalog
+        adminCatalog,
+        ui
     }
 });

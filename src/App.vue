@@ -1,6 +1,7 @@
 <template>
     <v-app id="app">
         <nav-bar />
+        <nav-drawer />
         <v-main class="ma-8">
             <router-view />
         </v-main>
@@ -9,10 +10,12 @@
 
 <script>
 import Navbar from '@/modules/common/components/Navbar.vue';
+import NavDrawer from '@/modules/common/components/NavDrawer.vue';
 export default {
     name: 'App',
     components: {
-        'nav-bar': Navbar
+        'nav-bar': Navbar,
+        'nav-drawer': NavDrawer
     }
 };
 </script>
@@ -24,11 +27,5 @@ export default {
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
-    .bc-primary {
-        border-color: var(--primary);
-    }
-    .justify-center {
-        justify-content: center;
-    }
 }
 </style>

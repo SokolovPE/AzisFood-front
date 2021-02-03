@@ -1,23 +1,10 @@
+// TODO: Rename this to catalog!
 <template>
-    <div>
-        <!-- Remove this when component will really be used!!! -->
-        <div>
-            <good-editor />
-        </div>
-        <!-- <div class="row" id="assort-edit-wrapper">
-            <div class="col col-12 col-md-12 col-sm-12 col-lg-2">
-                <category-editor />
-            </div>
-            <div class="col col-12 col-md-12 col-sm-12 col-lg-10">
-                <good-editor />
-            </div>
-        </div> -->
-    </div>
+    <good-editor />
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-//import CategoryListEditor from '@/modules/admin/catalog/components/CategoryListEditor.vue';
 import GoodListEditor from '@/modules/admin/catalog/components/GoodListEditor.vue';
 export default {
     computed: {
@@ -38,6 +25,7 @@ export default {
     methods: {
         ...mapActions('adminCatalog', ['clearEditsInProgress']),
         showModal(modalText) {
+            // TODO: REMOVE bvModal, it's from bootstrap!!!
             return this.$bvModal.msgBoxConfirm(modalText, {
                 title: 'Before you leave...',
                 centered: true,
@@ -66,21 +54,9 @@ export default {
         }
     },
     components: {
-        //'category-editor': CategoryListEditor,
         'good-editor': GoodListEditor
     }
 };
 </script>
 
-<style lang="scss" scoped>
-// #assort-edit-wrapper {
-//     margin-right: 0;
-//     margin-left: 0;
-// }
-// #new-cat {
-//     margin-bottom: 0.8rem;
-// }
-.fake-splitter {
-    height: 2rem;
-}
-</style>
+<style lang="scss" scoped></style>

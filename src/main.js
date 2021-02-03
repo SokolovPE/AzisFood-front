@@ -7,47 +7,16 @@ import VueRouter from 'vue-router';
 import VueMq from 'vue-mq';
 import VeeValidate from 'vee-validate';
 
-import {
-    BTabs,
-    BTab,
-    BFormSelect,
-    BFormSelectOption,
-    BListGroup,
-    BModal,
-    BButton,
-    //BButtonGroup,
-    ModalPlugin,
-    IconsPlugin
-} from 'bootstrap-vue';
 import { routes } from './router/routes';
 import { store } from './store/store';
 
 import setup from './interceptors';
 setup();
-
-//* Fonts and icons
-import 'bootstrap/dist/css/bootstrap.css';
-import '@/assets/argon-design-system-free/assets/css/argon-design-system.css';
-import 'bootstrap-vue/dist/bootstrap-vue.css';
-
-//* Install BootstrapVue
-Vue.component('BTabs', BTabs);
-Vue.component('BTab', BTab);
-Vue.component('BFormSelect', BFormSelect);
-Vue.component('BFormSelectOption', BFormSelectOption);
-Vue.component('BModal', BModal);
-Vue.component('BListGroup', BListGroup);
-Vue.component('BButton', BButton);
-//Vue.component('BButtonGroup', BButtonGroup);
-//* Optionally install the BootstrapVue icon components plugin
-Vue.use(IconsPlugin);
-
 Vue.config.productionTip = false;
 
 Vue.use(VueAxios, axios);
 Vue.use(VueRouter);
 Vue.use(VeeValidate);
-Vue.use(ModalPlugin);
 
 //* Media queries.
 Vue.use(VueMq, {

@@ -1,5 +1,15 @@
 <template>
-    <div class="row" :class="{ 'justify-center': isMobile }">
+    <div>
+        <v-row class="text-right">
+            <v-col>
+                <v-btn rounded color="blue accent-2 white--text" class="mr-2">
+                    <v-icon>mdi-folder-plus</v-icon>Add Category
+                </v-btn>
+                <v-btn rounded color="blue accent-2 white--text">
+                    <v-icon>mdi-plus-circle</v-icon>Add Good
+                </v-btn>
+            </v-col>
+        </v-row>
         <cat-chips />
         <good-grid :goods="goodsInCurretCat" />
         <!-- <good-card :category="currentCatCountless" :forCreate="true" />
