@@ -6,7 +6,7 @@
         ></v-app-bar-nav-icon>
         <v-spacer></v-spacer>
         <span class="pr-2 white--text">Search</span>
-        <v-responsive max-width="260">
+        <v-responsive max-width="260" class="pr-2">
             <v-text-field
                 dense
                 flat
