@@ -28,27 +28,33 @@ export default function setup() {
         },
         async function(error) {
             var originalRequest = error.config;
-            if (error.response.status === 401 && !originalRequest._retry) {
-                originalRequest._retry = true;
-                store.dispatch('auth/renew').then(
-                    newJwt => {
-                        if (!newJwt || !newJwt.accessToken) {
+            if (error.response) {
+                if (error.response.status === 401 && !originalRequest._retry) {
+                    originalRequest._retry = true;
+                    store.dispatch('auth/renew').then(
+                        newJwt => {
+                            if (!newJwt || !newJwt.accessToken) {
+                                store.dispatch('auth/logout');
+                                return Promise.reject(error);
+                            }
+                            // axios.defaults.headers.common[
+                            //     'Authorization'
+                            // ] = `Bearer ${newJwt.accessToken}`;
+                            originalRequest.headers.Authorization = `Bearer ${newJwt.accessToken}`;
+                            return Promise.resolve(axios(originalRequest));
+                        },
+                        error => {
                             store.dispatch('auth/logout');
                             return Promise.reject(error);
                         }
-                        // axios.defaults.headers.common[
-                        //     'Authorization'
-                        // ] = `Bearer ${newJwt.accessToken}`;
-                        originalRequest.headers.Authorization = `Bearer ${newJwt.accessToken}`;
-                        return Promise.resolve(axios(originalRequest));
-                    },
-                    error => {
-                        store.dispatch('auth/logout');
-                        return Promise.reject(error);
-                    }
+                    );
+                } else {
+                    return Promise.reject(error);
+                }
+            } else if (error.request) {
+                return Promise.reject(
+                    `Cannot reach service due to network problems. Please try again later.`
                 );
-            } else {
-                return Promise.reject(error);
             }
         }
     );
