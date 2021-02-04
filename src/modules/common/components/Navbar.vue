@@ -6,7 +6,7 @@
         ></v-app-bar-nav-icon>
         <v-spacer></v-spacer>
         <span class="pr-2 white--text">Search</span>
-        <v-responsive max-width="260" class="pr-2">
+        <v-responsive max-width="260">
             <v-text-field
                 dense
                 flat
@@ -22,6 +22,7 @@
             dot
             offset-x="10"
             offset-y="10"
+            class="pl-2"
         >
             <v-avatar color="primary" size="40"
                 ><img

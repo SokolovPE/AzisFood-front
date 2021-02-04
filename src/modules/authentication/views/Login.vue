@@ -8,61 +8,50 @@
             />
             <form name="form" @submit.prevent="handleLogin">
                 <div class="form-group">
-                    <label for="email">{{
-                        user.email == null && user.login == null
-                            ? 'Login/Email'
-                            : user.email == null
-                            ? 'Login'
-                            : 'Email'
-                    }}</label>
-                    <input
+                    <v-text-field
                         type="text"
+                        :label="
+                            user.email == null && user.login == null
+                                ? 'Login/Email'
+                                : user.email == null
+                                ? 'Login'
+                                : 'Email'
+                        "
                         v-model="currentLogin"
-                        v-validate="'required'"
+                        :rules="[rules.required]"
                         class="form-control"
                         name="email"
                     />
-                    <div
-                        v-if="errors.has('email')"
-                        class="alert alert-danger"
-                        role="alert"
-                    >
-                        Email or Login is required!
-                    </div>
                 </div>
                 <div class="form-group">
-                    <label for="password">Password</label>
-                    <input
+                    <v-text-field
                         type="password"
                         v-model="user.password"
                         v-validate="'required'"
                         class="form-control"
+                        :rules="[rules.required]"
                         name="password"
+                        label="Password"
                     />
-                    <div
-                        v-if="errors.has('password')"
-                        class="alert alert-danger"
-                        role="alert"
-                    >
-                        Password is required!
-                    </div>
                 </div>
                 <div class="form-group">
-                    <button
-                        class="btn btn-primary btn-block"
+                    <v-btn
+                        block
+                        color="primary"
                         :disabled="loading"
+                        type="submit"
                     >
                         <span
                             v-show="loading"
                             class="spinner-border spinner-border-sm"
                         ></span>
                         <span>Login</span>
-                    </button>
+                    </v-btn>
                 </div>
-                <div class="form-group">
-                    <div v-if="message" class="alert alert-danger" role="alert">
+                <div class="form-group pt-4">
+                    <v-alert v-if="message" type="warning" role="alert">
                         {{ message }}
-                    </div>
+                    </v-alert>
                 </div>
             </form>
         </div>
@@ -79,7 +68,14 @@ export default {
         return {
             user: new User(null, null),
             loading: false,
-            message: ''
+            message: '',
+            rules: {
+                required: value => !!value || 'Required.',
+                email: value => {
+                    const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                    return pattern.test(value) || 'Invalid e-mail.';
+                }
+            }
         };
     },
     computed: {
@@ -108,6 +104,7 @@ export default {
     methods: {
         ...mapActions('auth', ['logout', 'login']),
         handleLogin() {
+            console.log('uee');
             this.loading = true;
             this.$validator.validateAll().then(isValid => {
                 if (!isValid) {

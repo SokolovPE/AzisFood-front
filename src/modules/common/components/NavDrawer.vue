@@ -1,5 +1,5 @@
 <template>
-    <v-navigation-drawer class="nav-drawer" :value="getDrawerState" dark app>
+    <v-navigation-drawer class="nav-drawer" v-model="drawerState" dark app>
         <div class="nav-brand pt-6 pb-3">
             <router-link
                 :to="{ name: 'home' }"
@@ -63,10 +63,21 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 export default {
     computed: {
-        ...mapGetters('ui', ['getDrawerState'])
+        ...mapGetters('ui', ['getDrawerState']),
+        drawerState: {
+            get: function() {
+                return this.getDrawerState;
+            },
+            set: function(newValue) {
+                this.setDrawerState(newValue);
+            }
+        }
+    },
+    methods: {
+        ...mapActions('ui', ['setDrawerState'])
     }
 };
 </script>

@@ -27,7 +27,7 @@ export default function setup() {
             return response;
         },
         async function(error) {
-            const originalRequest = error.config;
+            var originalRequest = error.config;
             if (error.response.status === 401 && !originalRequest._retry) {
                 originalRequest._retry = true;
                 store.dispatch('auth/renew').then(
@@ -36,13 +36,11 @@ export default function setup() {
                             store.dispatch('auth/logout');
                             return Promise.reject(error);
                         }
-                        axios.defaults.headers.common[
-                            'Authorization'
-                        ] = `Bearer ${newJwt.accessToken}`;
-                        originalRequest.headers[
-                            'Authorization'
-                        ] = `Bearer ${newJwt.accessToken}`;
-                        return axios(originalRequest);
+                        // axios.defaults.headers.common[
+                        //     'Authorization'
+                        // ] = `Bearer ${newJwt.accessToken}`;
+                        originalRequest.headers.Authorization = `Bearer ${newJwt.accessToken}`;
+                        return Promise.resolve(axios(originalRequest));
                     },
                     error => {
                         store.dispatch('auth/logout');
