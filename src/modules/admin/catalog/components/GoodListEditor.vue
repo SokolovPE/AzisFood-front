@@ -1,31 +1,20 @@
 <template>
-    <div>
-        <v-row class="text-right">
-            <v-col>
-                <v-btn rounded color="blue accent-2 white--text" class="mr-2">
-                    <v-icon>mdi-folder-plus</v-icon>Add Category
-                </v-btn>
-                <v-btn rounded color="blue accent-2 white--text">
-                    <v-icon>mdi-plus-circle</v-icon>Add Good
-                </v-btn>
+    <v-container>
+        <v-row>
+            <!-- <v-col cols="12" sm="4">
+                <good-grid :goods="goodsInCurretCat" />
             </v-col>
+            <v-col  cols="12" sm="8">
+                <good-grid :goods="goodsInCurretCat" />
+            </v-col> -->
+            <good-grid :goods="goodsInCurretCat" />
         </v-row>
-        <cat-chips />
-        <good-grid :goods="goodsInCurretCat" />
-        <!-- <good-card :category="currentCatCountless" :forCreate="true" />
-        <good-card
-            v-for="good in goodsInCurretCat"
-            :key="good.id"
-            :valGood="good"
-        /> -->
-    </div>
+    </v-container>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
-//import GoodCard from '@/modules/admin/catalog/components/EditableGoodCard.vue';
 import GoodGrid from '@/modules/admin/catalog/components/GoodGrid.vue';
-import CategoryChips from '@/modules/admin/catalog/components/CategoryChips.vue';
 export default {
     computed: {
         ...mapGetters('adminCatalog', {
@@ -46,9 +35,7 @@ export default {
         }
     },
     components: {
-        //'good-card': GoodCard,
-        'good-grid': GoodGrid,
-        'cat-chips': CategoryChips
+        'good-grid': GoodGrid
     }
 };
 </script>

@@ -1,10 +1,9 @@
 <template>
-    <v-chip-group>
+    <v-chip-group active-class="primary" show-arrows mandatory>
         <v-chip
             v-for="cat in cats"
             :key="cat.id"
             class="mr-2"
-            color="blue accent-2 white--text"
             @click="selectCategory(cat)"
         >
             <v-avatar left color="grey lighten-5 primary--text">{{
