@@ -8,6 +8,7 @@
                             color="primary accent-2 white--text"
                             v-bind="attrs"
                             v-on="on"
+                            @click="showCategoryCreate = !showCategoryCreate"
                         >
                             <v-icon color="white">mdi-folder-plus</v-icon>
                         </v-btn>
@@ -71,14 +72,69 @@
                 </div>
             </template>
         </v-data-table>
+        <v-dialog v-model="showCategoryCreate" max-width="600px">
+            <template>
+                <v-card>
+                    <v-card-title>
+                        <span class="headline">Create new category</span>
+                    </v-card-title>
+                    <v-card-text>
+                        <v-container>
+                            <v-text-field
+                                label="Category title"
+                                v-model="newCategoryTitle"
+                                required
+                            ></v-text-field>
+                        </v-container>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                            color="blue darken-1"
+                            text
+                            @click="
+                                showCategoryCreate = false;
+                                newCategoryTitle = '';
+                            "
+                        >
+                            Close
+                        </v-btn>
+                        <v-btn
+                            color="blue darken-1"
+                            text
+                            @click="addCategory()"
+                        >
+                            Save
+                        </v-btn>
+                    </v-card-actions>
+                </v-card>
+            </template>
+        </v-dialog>
+        <v-snackbar
+            v-model="snackbar.state"
+            :timeout="snackbar.timeout"
+            :color="snackbar.color"
+            rounded="pill"
+        >
+            {{ snackbar.text }}
+        </v-snackbar>
     </v-card>
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import CategoryChips from '@/modules/admin/catalog/components/CategoryChips.vue';
 export default {
     data() {
         return {
+            showCategoryCreate: false,
+            snackbar: {
+                state: false,
+                text: '',
+                color: '',
+                timeout: 100
+            },
+            newCategoryTitle: '',
             search: '',
             selectedGoods: [],
             headers: [
@@ -108,6 +164,39 @@ export default {
         goods: {
             type: Array,
             default: () => []
+        }
+    },
+    methods: {
+        ...mapActions('adminCatalog', ['addCat', 'selectCat']),
+        addCategory() {
+            this.addCat(this.newCategoryTitle)
+                .then(createdCategory => {
+                    this.selectCat(createdCategory);
+                    this.showSnackbar(
+                        `Category ${this.newCategoryTitle} was successfully created`,
+                        3500,
+                        false
+                    );
+                })
+                .catch(() => {
+                    this.showSnackbar(
+                        `Category ${this.newCategoryTitle} was not created`,
+                        3500,
+                        true
+                    );
+                })
+                .then(() => {
+                    this.newCategoryTitle = '';
+                    this.showCategoryCreate = false;
+                });
+        },
+        showSnackbar(text, timeout, isError) {
+            this.snackbar = {
+                state: true,
+                text: text,
+                color: isError ? 'error' : 'success',
+                timeout: timeout
+            };
         }
     },
     components: {

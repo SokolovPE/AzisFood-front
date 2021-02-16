@@ -6,8 +6,7 @@ const state = {
     currentCategory: {
         id: 0,
         title: ''
-    },
-    editsInProgress: []
+    }
 };
 
 const getters = {
@@ -31,8 +30,7 @@ const getters = {
             title: state.currentCategory.title,
             id: state.currentCategory.id
         };
-    },
-    getEditsInProgress: state => state.editsInProgress
+    }
 };
 
 const mutations = {
@@ -86,27 +84,6 @@ const mutations = {
         state.goodsInCategory = state.goodsInCategory.map(good =>
             good.id == payload.id ? payload : good
         );
-    },
-    SET_EDIT_PROGRESS(state, payload) {
-        state.editsInProgress = payload;
-    },
-    ADD_EDIT_PROGRESS(state, payload) {
-        let editInProgress = state.editsInProgress.find(
-            edit => edit.goodId == payload.goodId && edit.value == payload.value
-        );
-        if (!editInProgress) {
-            state.editsInProgress.push(payload);
-        }
-    },
-    UPDATE_EDIT_PROGRESS(state, payload) {
-        state.editsInProgress = state.editsProgress.map(edit =>
-            edit.goodId == payload.goodId ? payload : edit
-        );
-    },
-    REMOVE_EDIT_PROGRESS(state, payload) {
-        state.editsInProgress = state.editsInProgress.filter(
-            edit => edit.goodId != payload.goodId
-        );
     }
 };
 
@@ -119,15 +96,20 @@ const actions = {
         });
     },
     addCat: async ({ commit }, title) => {
-        await AdminCatalogService.createCategory({ title: title }).then(
-            response => {
-                if (response.status == 201) {
-                    let cat = response.data;
-                    cat.goodCnt = 0;
-                    commit('ADD_CAT', cat);
+        return new Promise((resolve, reject) => {
+            AdminCatalogService.createCategory({ title: title }).then(
+                response => {
+                    if (response.status == 201) {
+                        let cat = response.data;
+                        cat.goodCnt = 0;
+                        commit('ADD_CAT', cat);
+                        resolve(cat);
+                    } else {
+                        reject();
+                    }
                 }
-            }
-        );
+            );
+        });
     },
     selectCat: ({ commit, dispatch }, payload) => {
         commit('SET_CURRENT_CAT', payload);
@@ -200,16 +182,6 @@ const actions = {
         await AdminCatalogService.deleteCategory(payload).then(() => {
             commit('REMOVE_CAT', payload);
         });
-    },
-    modifyEditInProgress: ({ commit }, payload) => {
-        if (payload.value) {
-            commit('ADD_EDIT_PROGRESS', payload);
-        } else {
-            commit('REMOVE_EDIT_PROGRESS', payload);
-        }
-    },
-    clearEditsInProgress: ({ commit }) => {
-        commit('SET_EDIT_PROGRESS', []);
     }
 };
 
