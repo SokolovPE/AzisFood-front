@@ -15,26 +15,29 @@
                 solo-inverted
             ></v-text-field>
         </v-responsive>
-        <v-badge
-            bordered
-            bottom
-            color="success"
-            dot
-            offset-x="10"
-            offset-y="10"
-            class="pl-2"
-        >
-            <v-avatar color="primary" size="40"
-                ><img
-                    v-if="true"
-                    alt="Avatar"
-                    src="@/assets/defaultProfile.png"/><v-icon
-                    v-else
-                    color="secondary"
-                    v-text="`ZZ`"
-                ></v-icon
-            ></v-avatar>
-        </v-badge>
+        <router-link to="/profile">
+            <v-badge
+                bordered
+                bottom
+                color="success"
+                dot
+                offset-x="10"
+                offset-y="10"
+                class="pl-2"
+            >
+                <v-avatar color="primary" size="40"
+                    ><v-img
+                        v-if="true"
+                        alt="Avatar"
+                        lazy-src="@/assets/defaultProfile.png"
+                        src="@/assets/defaultProfile.png"/><v-icon
+                        v-else
+                        color="secondary"
+                        v-text="`ZZ`"
+                    ></v-icon
+                ></v-avatar>
+            </v-badge>
+        </router-link>
     </v-app-bar>
 </template>
 
