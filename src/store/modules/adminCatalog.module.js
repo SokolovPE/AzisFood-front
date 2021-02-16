@@ -1,7 +1,9 @@
 import AdminCatalogService from '@/modules/admin/catalog/services/adminCatalog.service';
-
+import { GoodModel } from '@/modules/common/models/GoodModel';
 const state = {
     categories: [],
+    editorState: false,
+    goodOnEdit: { ...GoodModel },
     goodsInCategory: [],
     currentCategory: {
         id: 0,
@@ -30,6 +32,12 @@ const getters = {
             title: state.currentCategory.title,
             id: state.currentCategory.id
         };
+    },
+    getEditorState: state => {
+        return state.editorState;
+    },
+    getGoodOnEdit: state => {
+        return state.goodOnEdit;
     }
 };
 
@@ -84,6 +92,12 @@ const mutations = {
         state.goodsInCategory = state.goodsInCategory.map(good =>
             good.id == payload.id ? payload : good
         );
+    },
+    SET_EDITOR_STATE(state, payload) {
+        state.editorState = payload;
+    },
+    SET_GOOD_ON_EDIT(state, payload) {
+        state.goodOnEdit = payload;
     }
 };
 
@@ -182,6 +196,13 @@ const actions = {
         await AdminCatalogService.deleteCategory(payload).then(() => {
             commit('REMOVE_CAT', payload);
         });
+    },
+    setEditorState: ({ commit }, payload) => {
+        commit('SET_EDITOR_STATE', payload);
+    },
+    setGoodOnEdit: ({ commit }, payload) => {
+        commit('SET_GOOD_ON_EDIT', { ...payload });
+        commit('SET_EDITOR_STATE', true);
     }
 };
 

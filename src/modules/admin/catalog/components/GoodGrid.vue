@@ -21,6 +21,7 @@
                             color="primary accent-2 white--text"
                             v-bind="attrs"
                             v-on="on"
+                            @click="addGood()"
                         >
                             <v-icon color="white">mdi-plus-circle</v-icon>
                         </v-btn>
@@ -71,6 +72,14 @@
                     ></v-img>
                 </div>
             </template>
+            <template v-slot:item.actions="{ item }">
+                <v-icon small class="mr-2" @click="setGoodOnEdit(item)">
+                    mdi-pencil
+                </v-icon>
+                <v-icon small>
+                    mdi-delete
+                </v-icon>
+            </template>
         </v-data-table>
         <v-dialog v-model="showCategoryCreate" max-width="600px">
             <template>
@@ -118,12 +127,15 @@
         >
             {{ snackbar.text }}
         </v-snackbar>
+        <good-editor />
     </v-card>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
 import CategoryChips from '@/modules/admin/catalog/components/CategoryChips.vue';
+import GoodEditor from '@/modules/admin/catalog/components/GoodEditor.vue';
+import { GoodModel } from '@/modules/common/models/GoodModel';
 export default {
     data() {
         return {
@@ -156,7 +168,8 @@ export default {
                     value: 'category.title',
                     filterable: false
                 },
-                { text: 'Price', value: 'price', filterable: false }
+                { text: 'Price', value: 'price', filterable: false },
+                { text: 'Actions', value: 'actions', sortable: false }
             ]
         };
     },
@@ -167,7 +180,7 @@ export default {
         }
     },
     methods: {
-        ...mapActions('adminCatalog', ['addCat', 'selectCat']),
+        ...mapActions('adminCatalog', ['addCat', 'selectCat', 'setGoodOnEdit']),
         addCategory() {
             this.addCat(this.newCategoryTitle)
                 .then(createdCategory => {
@@ -197,10 +210,14 @@ export default {
                 color: isError ? 'error' : 'success',
                 timeout: timeout
             };
+        },
+        addGood() {
+            this.setGoodOnEdit(GoodModel);
         }
     },
     components: {
-        'cat-chips': CategoryChips
+        'cat-chips': CategoryChips,
+        'good-editor': GoodEditor
     }
 };
 </script>

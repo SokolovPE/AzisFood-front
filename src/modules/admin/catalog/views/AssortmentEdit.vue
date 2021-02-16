@@ -4,13 +4,9 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
 import GoodListEditor from '@/modules/admin/catalog/components/GoodListEditor.vue';
 export default {
     computed: {
-        ...mapGetters('adminCatalog', {
-            editsInProgress: 'getEditsInProgress'
-        }),
         goodsInCurretCat() {
             return (
                 this.goods.filter(
@@ -23,7 +19,6 @@ export default {
         }
     },
     methods: {
-        ...mapActions('adminCatalog', ['clearEditsInProgress']),
         showModal(modalText) {
             // TODO: REMOVE bvModal, it's from bootstrap!!!
             return this.$bvModal.msgBoxConfirm(modalText, {

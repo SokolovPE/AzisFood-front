@@ -20,8 +20,7 @@ export default {
         ...mapGetters('adminCatalog', {
             goods: 'getGoodsInCurrentCat',
             currentCat: 'getCurrentCategory',
-            currentCatCountless: 'getCurrentCategoryWithoutCnt',
-            editsInProgress: 'getEditsInProgress'
+            currentCatCountless: 'getCurrentCategoryWithoutCnt'
         }),
         goodsInCurretCat() {
             return (
