@@ -24,6 +24,10 @@ class AdminCatalogService extends CatalogService {
     deleteGood(goodId) {
         return axios.delete(`${API_URL}/good/${goodId}`);
     }
+
+    deleteGoods(goodIds) {
+        return axios.delete(`${API_URL}/good/deleteMany`, { data: goodIds });
+    }
 }
 
 export default new AdminCatalogService();

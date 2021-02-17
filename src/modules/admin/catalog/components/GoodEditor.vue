@@ -1,114 +1,140 @@
 <template>
-    <v-dialog
-        v-model="show"
-        :fullscreen="false"
-        :hide-overlay="false"
-        transition="dialog-bottom-transition"
-        max-width="1200px"
-    >
-        <v-form v-model="valid" ref="form">
-            <v-card>
-                <v-toolbar dark color="primary">
-                    <v-btn icon dark @click="show = false">
-                        <v-icon>mdi-close</v-icon>
-                    </v-btn>
-                    <v-toolbar-title
-                        >{{ forCreate ? 'Create' : 'Edit' }}:
-                        {{ good.title }}</v-toolbar-title
-                    >
-                    <v-spacer></v-spacer>
-                    <v-toolbar-items>
-                        <v-btn dark text @click="saveGood">
-                            Save
+    <div>
+        <v-dialog
+            v-model="show"
+            :fullscreen="false"
+            :hide-overlay="false"
+            transition="dialog-bottom-transition"
+            max-width="1200px"
+        >
+            <v-form v-model="valid" ref="form">
+                <v-card>
+                    <v-toolbar dark color="primary">
+                        <v-btn icon dark @click="show = false">
+                            <v-icon>mdi-close</v-icon>
                         </v-btn>
-                    </v-toolbar-items>
-                </v-toolbar>
-                <v-list>
-                    <v-list-item>
-                        <v-list-item-content>
-                            <v-list-item-title>Main Info</v-list-item-title>
-                            <v-row no-gutters align="center" justify="center">
-                                <v-col cols="12" sm="1">
-                                    <v-img
-                                        :src="good.imgUrl"
-                                        :lazy-src="good.imgUrl"
-                                        max-width="150"
-                                        max-height="150"
+                        <v-toolbar-title
+                            >{{ forCreate ? 'Create' : 'Edit' }}:
+                            {{ good.title }}</v-toolbar-title
+                        >
+                        <v-spacer></v-spacer>
+                        <v-toolbar-items>
+                            <v-btn dark text @click="saveGood">
+                                Save
+                            </v-btn>
+                        </v-toolbar-items>
+                    </v-toolbar>
+                    <v-list>
+                        <v-list-item>
+                            <v-list-item-content>
+                                <v-list-item-title>Main Info</v-list-item-title>
+                                <v-row
+                                    no-gutters
+                                    align="center"
+                                    justify="center"
+                                >
+                                    <v-col cols="12" sm="1">
+                                        <v-img
+                                            :src="imgUrl"
+                                            :lazy-src="imgUrl"
+                                            max-width="150"
+                                            max-height="150"
+                                            @click="showImgLoader = true"
+                                        >
+                                            <template v-slot:placeholder>
+                                                <v-row
+                                                    class="fill-height ma-0"
+                                                    align="center"
+                                                    justify="center"
+                                                >
+                                                    <v-progress-circular
+                                                        indeterminate
+                                                        color="grey"
+                                                    ></v-progress-circular>
+                                                </v-row>
+                                            </template>
+                                        </v-img>
+                                    </v-col>
+                                    <v-col cols="12" sm="11">
+                                        <v-container>
+                                            <v-text-field
+                                                label="Title"
+                                                v-model="good.title"
+                                                :rules="[
+                                                    rules.required,
+                                                    rules.titleCounter
+                                                ]"
+                                                counter="25"
+                                            ></v-text-field>
+                                            <v-select
+                                                :items="categories"
+                                                v-model="good.category"
+                                                item-text="title"
+                                                return-object
+                                                label="Category"
+                                            ></v-select></v-container
+                                    ></v-col>
+                                </v-row>
+                            </v-list-item-content>
+                        </v-list-item>
+                        <v-divider></v-divider>
+                        <v-list-item>
+                            <v-list-item-content>
+                                <v-list-item-title>Price</v-list-item-title>
+                                <div class="d-flex">
+                                    <v-text-field
+                                        v-model="coinVal"
+                                        class="pr-2"
+                                        type="number"
+                                        style="max-width: 100px"
+                                        prefix="$"
                                     >
-                                        <template v-slot:placeholder>
-                                            <v-row
-                                                class="fill-height ma-0"
-                                                align="center"
-                                                justify="center"
-                                            >
-                                                <v-progress-circular
-                                                    indeterminate
-                                                    color="grey"
-                                                ></v-progress-circular>
-                                            </v-row>
-                                        </template>
-                                    </v-img>
-                                </v-col>
-                                <v-col cols="12" sm="11">
-                                    <v-container>
-                                        <v-text-field
-                                            label="Title"
-                                            v-model="good.title"
-                                            :rules="[
-                                                rules.required,
-                                                rules.titleCounter
-                                            ]"
-                                            counter="25"
-                                        ></v-text-field>
-                                        <v-select
-                                            :items="categories"
-                                            v-model="good.category"
-                                            item-text="title"
-                                            return-object
-                                            label="Category"
-                                        ></v-select></v-container
-                                ></v-col>
-                            </v-row>
-                        </v-list-item-content>
-                    </v-list-item>
-                    <v-divider></v-divider>
-                    <v-list-item>
-                        <v-list-item-content>
-                            <v-list-item-title>Price</v-list-item-title>
-                            <div class="d-flex">
-                                <v-text-field
-                                    v-model="coinVal"
-                                    class="pr-2"
-                                    type="number"
-                                    style="max-width: 100px"
-                                    prefix="$"
+                                    </v-text-field>
+                                    <v-text-field
+                                        v-model="changeVal"
+                                        type="number"
+                                        style="max-width: 60px"
+                                        prefix="¢"
+                                        :rules="[rules.greaterZero]"
+                                    >
+                                    </v-text-field>
+                                </div>
+                            </v-list-item-content>
+                        </v-list-item>
+                        <v-divider></v-divider>
+                        <v-list-item>
+                            <v-list-item-content>
+                                <v-list-item-title
+                                    >Description</v-list-item-title
                                 >
-                                </v-text-field>
-                                <v-text-field
-                                    v-model="changeVal"
-                                    type="number"
-                                    style="max-width: 60px"
-                                    prefix="¢"
-                                    :rules="[rules.greaterZero]"
-                                >
-                                </v-text-field>
-                            </div>
-                        </v-list-item-content>
-                    </v-list-item>
-                    <v-divider></v-divider>
-                    <v-list-item>
-                        <v-list-item-content>
-                            <v-list-item-title>Description</v-list-item-title>
-                            <v-textarea
-                                solo
-                                v-model="good.description"
-                            ></v-textarea>
-                        </v-list-item-content>
-                    </v-list-item>
-                </v-list>
+                                <v-textarea
+                                    solo
+                                    v-model="good.description"
+                                ></v-textarea>
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-list>
+                </v-card>
+            </v-form>
+        </v-dialog>
+
+        <v-dialog v-model="showImgLoader" max-width="500px">
+            <v-card>
+                <v-card-title>
+                    Good image Url
+                </v-card-title>
+                <v-card-text>
+                    <v-text-field label="Your image url" v-model="good.imgUrl">
+                    </v-text-field>
+                    <v-btn
+                        color="primary accent-2 white--text"
+                        @click="showImgLoader = false"
+                        >Save</v-btn
+                    >
+                </v-card-text>
             </v-card>
-        </v-form>
-    </v-dialog>
+        </v-dialog>
+    </div>
 </template>
 
 <script>
@@ -118,6 +144,7 @@ export default {
     data() {
         return {
             valid: false,
+            showImgLoader: false,
             good: { ...GoodModel },
             forCreate: false,
             titleMaxLen: 25,
@@ -134,7 +161,8 @@ export default {
         ...mapGetters('adminCatalog', {
             categories: 'getCategoriesWithoutCnt',
             getEditorState: 'getEditorState',
-            getGoodOnEdit: 'getGoodOnEdit'
+            getGoodOnEdit: 'getGoodOnEdit',
+            currentCat: 'getCurrentCategoryWithoutCnt'
         }),
         show: {
             get() {
@@ -162,6 +190,9 @@ export default {
         },
         totalVal() {
             return this.good.price.toFixed(2);
+        },
+        imgUrl() {
+            return this.good.imgUrl || require('@/assets/default.png');
         }
     },
     methods: {
@@ -205,7 +236,7 @@ export default {
             this.good = { ...newValue };
 
             if (this.forCreate) {
-                this.good.category = this.categories[0];
+                this.good.category = this.currentCat;
             }
         }
     },

@@ -88,6 +88,11 @@ const mutations = {
             good => good.id != payload
         );
     },
+    REMOVE_GOODS_BY_IDS(state, payload) {
+        state.goodsInCategory = state.goodsInCategory.filter(
+            good => !payload.includes(good.id)
+        );
+    },
     UPDATE_GOOD(state, payload) {
         state.goodsInCategory = state.goodsInCategory.map(good =>
             good.id == payload.id ? payload : good
@@ -164,8 +169,19 @@ const actions = {
         });
     },
     removeGoodById: async ({ commit }, payload) => {
-        await AdminCatalogService.deleteGood(payload).then(() => {
-            commit('REMOVE_GOOD_BY_ID', payload);
+        return new Promise(resolve => {
+            AdminCatalogService.deleteGood(payload).then(response => {
+                commit('REMOVE_GOOD_BY_ID', payload);
+                resolve(response.data);
+            });
+        });
+    },
+    removeGoodsByIds: async ({ commit }, payload) => {
+        return new Promise(resolve => {
+            AdminCatalogService.deleteGoods(payload).then(response => {
+                commit('REMOVE_GOODS_BY_IDS', payload);
+                resolve(response.data);
+            });
         });
     },
     setGoodCntInCat: async ({ commit }, payload) => {

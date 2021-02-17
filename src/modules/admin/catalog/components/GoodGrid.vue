@@ -30,7 +30,12 @@
                 </v-tooltip>
                 <v-tooltip bottom v-if="selectedGoods.length > 0">
                     <template v-slot:activator="{ on, attrs }">
-                        <v-btn color="red white--text" v-bind="attrs" v-on="on">
+                        <v-btn
+                            color="red white--text"
+                            v-bind="attrs"
+                            v-on="on"
+                            @click="showDeleteDialog = true"
+                        >
                             <v-icon color="white">mdi-delete</v-icon>
                         </v-btn>
                     </template>
@@ -55,6 +60,7 @@
             v-model="selectedGoods"
             class="elevation-1"
             multi-sort
+            @dblclick:row="rowDblClick"
         >
             <template v-slot:top>
                 <div class="v-subheader theme--light sub-header">
@@ -76,7 +82,13 @@
                 <v-icon small class="mr-2" @click="setGoodOnEdit(item)">
                     mdi-pencil
                 </v-icon>
-                <v-icon small>
+                <v-icon
+                    small
+                    @click="
+                        singleGood = item;
+                        showSingleDeleteDialog = true;
+                    "
+                >
                     mdi-delete
                 </v-icon>
             </template>
@@ -128,18 +140,46 @@
             {{ snackbar.text }}
         </v-snackbar>
         <good-editor />
+
+        <confirmation
+            :show="showDeleteDialog"
+            title="Delete confirmation"
+            text="Do you really want to delete selected goods?"
+            smallText="This action cannot be reverted"
+            @close="showDeleteDialog = false"
+            @yes="removeSelectedGoods"
+        ></confirmation>
+
+        <confirmation
+            :show="showSingleDeleteDialog"
+            title="Delete confirmation"
+            :text="`Do you really want to delete <b>${singleGood.title}</b>?`"
+            smallText="This action cannot be reverted"
+            @close="showSingleDeleteDialog = false"
+            @yes="removeSingleGood(singleGood)"
+        ></confirmation>
     </v-card>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import CategoryChips from '@/modules/admin/catalog/components/CategoryChips.vue';
 import GoodEditor from '@/modules/admin/catalog/components/GoodEditor.vue';
+import ConfirmDialog from '@/modules/common/components/ConfirmDialog.vue';
 import { GoodModel } from '@/modules/common/models/GoodModel';
 export default {
+    props: {
+        goods: {
+            type: Array,
+            default: () => []
+        }
+    },
     data() {
         return {
             showCategoryCreate: false,
+            showDeleteDialog: false,
+            showSingleDeleteDialog: false,
+            singleGood: {},
             snackbar: {
                 state: false,
                 text: '',
@@ -173,14 +213,17 @@ export default {
             ]
         };
     },
-    props: {
-        goods: {
-            type: Array,
-            default: () => []
-        }
+    computed: {
+        ...mapGetters('adminCatalog', { curCat: 'getCurrentCategory' })
     },
     methods: {
-        ...mapActions('adminCatalog', ['addCat', 'selectCat', 'setGoodOnEdit']),
+        ...mapActions('adminCatalog', [
+            'addCat',
+            'selectCat',
+            'setGoodOnEdit',
+            'removeGoodsByIds',
+            'removeGoodById'
+        ]),
         addCategory() {
             this.addCat(this.newCategoryTitle)
                 .then(createdCategory => {
@@ -213,11 +256,39 @@ export default {
         },
         addGood() {
             this.setGoodOnEdit(GoodModel);
+        },
+        rowDblClick(_event, object) {
+            this.setGoodOnEdit(object.item);
+        },
+        removeSelectedGoods() {
+            let selectedIds = this.selectedGoods.map(item => item.id);
+            this.removeGoodsByIds(selectedIds)
+                .then(response => {
+                    this.showSnackbar(response, 2500, false);
+                })
+                .catch(err => {
+                    this.showSnackbar(err, 2500, true);
+                });
+        },
+        removeSingleGood(item) {
+            this.removeGoodById(item.id)
+                .then(response => {
+                    this.showSnackbar(response, 2500, false);
+                })
+                .catch(err => {
+                    this.showSnackbar(err, 2500, true);
+                });
+        }
+    },
+    watch: {
+        curCat() {
+            this.selectedGoods = [];
         }
     },
     components: {
         'cat-chips': CategoryChips,
-        'good-editor': GoodEditor
+        'good-editor': GoodEditor,
+        confirmation: ConfirmDialog
     }
 };
 </script>
